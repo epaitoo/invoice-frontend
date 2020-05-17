@@ -273,3 +273,5 @@ var KTOffcanvas = function(elementId, options) {
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = KTOffcanvas;
 }
+
+export  default  KTOffcanvas;

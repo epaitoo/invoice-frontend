@@ -652,3 +652,6 @@ var KTPortlet = function(elementId, options) {
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = KTPortlet;
 }
+
+
+export default KTPortlet;

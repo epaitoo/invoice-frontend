@@ -156,3 +156,5 @@ var KTAvatar = function(elementId, options) {
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = KTAvatar;
 }
+
+export default KTAvatar;

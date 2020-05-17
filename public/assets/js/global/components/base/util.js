@@ -1,4 +1,4 @@
-
+import KTAppOptions from './colors'
 
 "use strict";
 /**
@@ -1579,4 +1579,4 @@ window.onload = function() {
     KTUtil.removeClass(KTUtil.get('body'), 'kt-page--loading');
 }
 
-export default KTUtil
+export default KTUtil;

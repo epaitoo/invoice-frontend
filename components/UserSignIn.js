@@ -1,0 +1,91 @@
+import React, { Component } from 'react';
+import Head from "next/head";
+
+
+
+export default class UserSignIn extends Component {
+
+    
+    
+    render(){
+
+        const bgImg = {
+            backgroundImage: 'url(/assets/media/bg/bg-1.jpg)'
+        }
+
+        return(
+           
+            <div className="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-aside--minimize kt-page--loading">
+
+                {/* <!-- begin:: Page --> */}
+                <div className="kt-grid kt-grid--ver kt-grid--root kt-page">
+                    <div className="kt-grid kt-grid--hor kt-grid--root kt-login kt-login--v2 kt-login--signin" id="kt_login">
+                        <div className="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" style={bgImg}>
+                            <div className="kt-grid__item kt-grid__item--fluid kt-login__wrapper">
+                                <div className="kt-login__container">
+                                    <div className="kt-login__logo">
+                                        <a href="#">
+                                            <img src="assets/media/logos/logo-mini-2-md.png" />
+                                        </a>
+                                    </div>
+                                    <div className="kt-login__signin">
+                                        <div className="kt-login__head">
+                                            <h3 className="kt-login__title">Sign In To Admin</h3>
+                                        </div>
+                                        <form className="kt-form" action="">
+                                            <div className="input-group">
+                                                <input 
+                                                    className="form-control" 
+                                                    type="text" 
+                                                    placeholder="Email" 
+                                                    name="email"  
+                                                />
+                                            </div>
+                                            <div className="input-group">
+                                                <input 
+                                                    className="form-control" 
+                                                    type="password" 
+                                                    placeholder="Password" 
+                                                    name="password"                                                        
+                                                />
+                                            </div>
+                                            <div className="row kt-login__extra">
+                                                <div className="col">
+                                                    <label className="kt-checkbox">
+                                                        <input 
+                                                            type="checkbox" 
+                                                            name="remember"                                                                
+                                                        /> Remember me
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                                <div className="col kt-align-right">
+                                                    <a href="" id="kt_login_forgot" className="kt-link kt-login__link">Forget Password ?</a>
+                                                </div>
+                                            </div>
+                                            <div className="kt-login__actions">
+                                                <button id="kt_login_signin_submit" className="btn btn-pill kt-login__btn-primary">Sign In</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div className="kt-login__account">
+                                        <span className="kt-login__account-msg">
+                                            Don't have an account yet ?
+                                        </span>&nbsp;&nbsp;
+                                        <a href="" id="kt_login_signup" className="kt-link kt-link--light kt-login__account-link">Sign Up</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+    
+            
+         
+        );
+
+    }
+
+}

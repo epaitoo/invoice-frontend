@@ -178,3 +178,5 @@ var KTScrolltop = function(elementId, options) {
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = KTScrolltop;
 }
+
+export default  KTScrolltop;

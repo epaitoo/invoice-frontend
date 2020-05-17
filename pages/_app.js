@@ -4,6 +4,7 @@ import '../public/assets/plugins/global/plugins.bundle.css'
 
 // Custom CSS for a page
 import '../public/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css'
+import  '../public/assets/css/pages/login/login-2.css'
 
 
 

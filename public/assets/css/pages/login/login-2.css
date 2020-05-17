@@ -7,6 +7,7 @@
     overflow: hidden; }
     .kt-login.kt-login--v2 .kt-login__wrapper .kt-login__container {
       width: 430px;
+      height: 1000px;
       margin: 0 auto; }
       .kt-login.kt-login--v2 .kt-login__wrapper .kt-login__container .kt-login__logo {
         text-align: center;
@@ -107,14 +108,14 @@
           font-size: 1.1rem;
           font-weight: 500; }
 
-.kt-login.kt-login--v2.kt-login--signin .kt-login__signup {
-  display: none; }
+/* .kt-login.kt-login--v2.kt-login--signin .kt-login__signup {
+  display: none; } */
 
 .kt-login.kt-login--v2.kt-login--signin .kt-login__signin {
   display: block; }
 
-.kt-login.kt-login--v2.kt-login--signin .kt-login__forgot {
-  display: none; }
+/* .kt-login.kt-login--v2.kt-login--signin .kt-login__forgot {
+  display: none; } */
 
 .kt-login.kt-login--v2.kt-login--signup .kt-login__signup {
   display: block; }

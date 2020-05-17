@@ -187,3 +187,5 @@ var KTDialog = function(options) {
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = KTDialog;
 }
+
+export default  KTDialog;

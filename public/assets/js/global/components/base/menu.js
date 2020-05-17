@@ -850,3 +850,5 @@ document.addEventListener("click", function (e) {
         }
     }
 });
+
+export default  KTMenu;

@@ -43,6 +43,9 @@ const Layout = ({children, title="Onnex Engineering- Admin Dashboard"}) => (
 
             {/* <!--end::Fonts --> */}
 
+            {/* <!--begin::Page Custom Styles(used by this page) --> */}
+		    <link href="/assets/css/pages/login/login-6.css" rel="stylesheet" type="text/css" />
+
             {/* <!--begin::Page Vendors Styles(used by this page) --> */}
             <link href="/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" />
 

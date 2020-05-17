@@ -1,3 +1,7 @@
+import KTUtil from "./util";
+
+"use strict";
+
 
 var KTAppOptions = {
     "colors": {

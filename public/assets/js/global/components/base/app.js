@@ -349,3 +349,5 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 $(document).ready(function() {
     KTApp.init(KTAppOptions);
 });
+
+export default KTApp;

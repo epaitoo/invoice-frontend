@@ -437,3 +437,5 @@ var KTWizard = function(elementId, options) {
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = KTWizard;
 }
+
+export default KTWizard;
