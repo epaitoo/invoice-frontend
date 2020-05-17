@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Head from "next/head";
+import Link from 'next/link';
 
 
 
@@ -52,7 +53,9 @@ export default class ForgotPassword extends Component {
                                         <span className="kt-login__account-msg">
                                             Don't have an account yet ?
                                         </span>&nbsp;&nbsp;
-                                        <a href="" id="kt_login_signup" className="kt-link kt-link--light kt-login__account-link">Sign Up</a>
+                                        <Link href="/register">
+                                            <a id="kt_login_signup" className="kt-link kt-link--light kt-login__account-link">Sign Up</a>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

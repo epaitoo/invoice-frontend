@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Head from "next/head";
+import Link from 'next/link';
 
 
 
@@ -84,7 +84,9 @@ export default class UserSignUp extends Component {
                                         <span className="kt-login__account-msg">
                                             Already have an account  ?
                                         </span>&nbsp;&nbsp;
-                                        <a href="" id="kt_login_signup" className="kt-link kt-link--light kt-login__account-link">Sign In</a>
+                                        <Link href="/login">
+                                            <a  id="kt_login_signup" className="kt-link kt-link--light kt-login__account-link">Sign In</a>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

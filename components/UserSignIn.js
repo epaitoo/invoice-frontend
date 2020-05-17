@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Head from "next/head";
+import Link from 'next/link';
 
 
 
@@ -24,13 +24,15 @@ export default class UserSignIn extends Component {
                             <div className="kt-grid__item kt-grid__item--fluid kt-login__wrapper">
                                 <div className="kt-login__container">
                                     <div className="kt-login__logo">
-                                        <a href="#">
-                                            <img src="assets/media/logos/logo-mini-2-md.png" />
-                                        </a>
+                                        <Link href="/">
+                                            <a>
+                                                <img src="assets/media/logos/logo-mini-2-md.png" />
+                                            </a>
+                                        </Link>
                                     </div>
                                     <div className="kt-login__signin">
                                         <div className="kt-login__head">
-                                            <h3 className="kt-login__title">Sign In To Admin</h3>
+                                            <h3 className="kt-login__title">Sign In</h3>
                                         </div>
                                         <form className="kt-form" action="">
                                             <div className="input-group">
@@ -60,7 +62,9 @@ export default class UserSignIn extends Component {
                                                     </label>
                                                 </div>
                                                 <div className="col kt-align-right">
-                                                    <a href="" id="kt_login_forgot" className="kt-link kt-login__link">Forget Password ?</a>
+                                                    <Link href="/forgot-password">
+                                                        <a id="kt_login_forgot" className="kt-link kt-login__link">Forget Password ?</a>
+                                                    </Link>
                                                 </div>
                                             </div>
                                             <div className="kt-login__actions">
@@ -72,7 +76,9 @@ export default class UserSignIn extends Component {
                                         <span className="kt-login__account-msg">
                                             Don't have an account yet ?
                                         </span>&nbsp;&nbsp;
-                                        <a href="" id="kt_login_signup" className="kt-link kt-link--light kt-login__account-link">Sign Up</a>
+                                        <Link href="/register">
+                                            <a id="kt_login_signup" className="kt-link kt-link--light kt-login__account-link">Sign Up</a>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
