@@ -1,6 +1,25 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
+import * as Yup from "yup";
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 
+
+//define vqlidation schema using Yup
+const SignUpSchema = Yup.object().shape({
+    name: Yup.string()
+        .required("Name is required"),
+    email: Yup.string()
+        .email("Invalid email address format")
+        .required("Email is required"),   
+    phone: Yup.string()
+        .required("Phone Number is required"),
+    password: Yup.string()
+        .min(8, "Password must be 8 characters at minimum")
+        .required("Password is required"),
+    confirm_password: Yup.string()
+        .oneOf([Yup.ref('password'), null], 'Passwords must match')
+        .required('Password confirmation is required!'),    
+});
 
 
 export default class UserSignUp extends Component {
@@ -33,52 +52,101 @@ export default class UserSignUp extends Component {
                                             <h3 className="kt-login__title">Sign Up</h3>
                                             <div className="kt-login__desc">Enter your details to create your account:</div>
                                         </div>
-                                        <form className="kt-login__form kt-form" action="">
-                                            <div className="input-group">
-                                                <input 
-                                                    className="form-control" 
-                                                    type="text" 
-                                                    placeholder="Fullname" 
-                                                    name="fullname" 
-                                                />
-                                            </div>
-                                            <div className="input-group">
-                                                <input 
-                                                    className="form-control" 
-                                                    type="text" 
-                                                    placeholder="Email" 
-                                                    name="email"                                                        
-                                                />
-                                            </div>
-                                            <div className="input-group">
-                                                <input 
-                                                    className="form-control" 
-                                                    type="password" 
-                                                    placeholder="Password" 
-                                                    name="password" 
-                                                />
-                                            </div>
-                                            <div className="input-group">
-                                                <input 
-                                                    className="form-control" 
-                                                    type="password" 
-                                                    placeholder="Confirm Password" 
-                                                    name="rpassword" />
-                                            </div>
-                                            <div className="row kt-login__extra">
-                                                <div className="col kt-align-left">
-                                                    <label className="kt-checkbox">
-                                                        <input type="checkbox" name="agree" />I Agree the <a href="#" className="kt-link kt-login__link kt-font-bold">terms and conditions</a>.
-                                                        <span></span>
-                                                    </label>
-                                                    <span className="form-text text-muted"></span>
+                                        {/* Using Formik */}
+                                        <Formik 
+                                            initialValues={{ name: '', email: '', phone:'', password:'', confirm_password:''}}
+                                            validationSchema={SignUpSchema}
+                                            onSubmit={ (values, { setSubmitting }) => {
+                                                alert(JSON.stringify(values, null, 2));
+                                                setSubmitting(false);
+                                            }}
+                                        >
+                                        {({ touched, errors, isSubmitting }) => (
+                                            <Form className="kt-login__form kt-form">
+                                                <div className="input-group">
+                                                    <Field
+                                                        type="text" 
+                                                        placeholder="Full Name" 
+                                                        name="name" 
+                                                        className={`form-control ${
+                                                            touched.name && errors.name ? "is-invalid" : ""
+                                                        }`} 
+                                                    />
+                                                    <ErrorMessage
+                                                        component="div"
+                                                        name="name"
+                                                        className="error invalid-feedback"
+                                                    />   
                                                 </div>
-                                            </div>
-                                            <div className="kt-login__actions">
-                                                <button id="kt_login_signup_submit" className="btn btn-pill kt-login__btn-primary">Sign Up</button>&nbsp;&nbsp;
-                                                <button id="kt_login_signup_cancel" className="btn btn-pill kt-login__btn-secondary">Cancel</button>
-                                            </div>
-                                        </form>
+                                                <div className="input-group">
+                                                    <Field
+                                                        type="text" 
+                                                        placeholder="Email" 
+                                                        name="email" 
+                                                        className={`form-control ${
+                                                            touched.email && errors.email ? "is-invalid" : ""
+                                                        }`} 
+                                                    />
+                                                    <ErrorMessage
+                                                        component="div"
+                                                        name="email"
+                                                        className="error invalid-feedback"
+                                                    />   
+                                                </div>
+                                                <div className="input-group">
+                                                    <Field
+                                                        type="text" 
+                                                        placeholder="Phone Number" 
+                                                        name="phone" 
+                                                        className={`form-control ${
+                                                            touched.phone && errors.phone ? "is-invalid" : ""
+                                                        }`} 
+                                                    />
+                                                    <ErrorMessage
+                                                        component="div"
+                                                        name="phone"
+                                                        className="error invalid-feedback"
+                                                    />   
+                                                </div>
+                                                <div className="input-group">
+                                                    <Field
+                                                        type="password" 
+                                                        placeholder="Password" 
+                                                        name="password" 
+                                                        className={`form-control ${
+                                                            touched.password && errors.password ? "is-invalid" : ""
+                                                        }`} 
+                                                    />
+                                                    <ErrorMessage
+                                                        component="div"
+                                                        name="password"
+                                                        className="error invalid-feedback"
+                                                    />   
+                                                </div>
+                                                <div className="input-group">
+                                                    <Field
+                                                        type="password" 
+                                                        placeholder="Confirm Password" 
+                                                        name="confirm_password" 
+                                                        className={`form-control ${
+                                                            touched.confirm_password && errors.confirm_password ? "is-invalid" : ""
+                                                        }`} 
+                                                    />
+                                                    <ErrorMessage
+                                                        component="div"
+                                                        name="confirm_password"
+                                                        className="error invalid-feedback"
+                                                    />   
+                                                </div>
+                                                <div className="kt-login__actions">
+                                                    <button id="kt_login_signup_submit" className="btn btn-pill kt-login__btn-primary">
+                                                        {isSubmitting ? 'Please wait...' : 'Sign Up'}
+                                                    </button>&nbsp;&nbsp;
+                                                    <button id="kt_login_signup_cancel" className="btn btn-pill kt-login__btn-secondary">Cancel</button>
+                                                </div>
+                                            </Form>
+                                        )}
+                                        </Formik>
                                     </div>
                                     <div className="kt-login__account">
                                         <span className="kt-login__account-msg">

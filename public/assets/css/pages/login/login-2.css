@@ -49,7 +49,7 @@
         .kt-login.kt-login--v2 .kt-login__wrapper .kt-login__container .kt-form .form-control.is-valid + .valid-feedback,
         .kt-login.kt-login--v2 .kt-login__wrapper .kt-login__container .kt-form .form-control.is-invalid + .invalid-feedback {
           font-weight: 500;
-          font-size: 0.9rem;
+          font-size: 1.1rem;
           padding-left: 1.6rem; }
         .kt-login.kt-login--v2 .kt-login__wrapper .kt-login__container .kt-form .kt-login__extra {
           padding-left: 7px;
