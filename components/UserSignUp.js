@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
+import Router from 'next/router';
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import Data from '../services/Helper';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 
 //define vqlidation schema using Yup
@@ -24,7 +28,10 @@ const SignUpSchema = Yup.object().shape({
 
 export default class UserSignUp extends Component {
 
-    
+    constructor() {
+        super();
+        this.data = new Data();
+    }
     
     render(){
 
@@ -56,13 +63,28 @@ export default class UserSignUp extends Component {
                                         <Formik 
                                             initialValues={{ name: '', email: '', phone:'', password:'', confirm_password:''}}
                                             validationSchema={SignUpSchema}
-                                            onSubmit={ (values, { setSubmitting }) => {
-                                                alert(JSON.stringify(values, null, 2));
+                                            onSubmit={async (values, { setSubmitting }) => {
+                                                await new Promise(resolve => setTimeout(resolve, 500));
+                                                // console.log(values);
+                                                
+                                                // add code here
+                                                this.data.createUser(values)
+                                                    .then(response => {
+                                                        if (response !== null || response !== undefined) {
+                                                            toast.success(response['message'], { autoClose: 5000 });
+                                                            Router.push('/login');
+                                                            console.log(response['message'])
+                                                        } 
+                                                    })
+                                                    .catch(err => {
+                                                        toast.error('Hmm...Something went Wrong', { autoClose: 5000 });
+                                                        console.log(err)
+                                                    })
                                                 setSubmitting(false);
                                             }}
                                         >
-                                        {({ touched, errors, isSubmitting }) => (
-                                            <Form className="kt-login__form kt-form">
+                                        {({ touched, handleSubmit, errors, isSubmitting }) => (
+                                            <Form className="kt-login__form kt-form" onSubmit={handleSubmit}>
                                                 <div className="input-group">
                                                     <Field
                                                         type="text" 
@@ -139,7 +161,7 @@ export default class UserSignUp extends Component {
                                                     />   
                                                 </div>
                                                 <div className="kt-login__actions">
-                                                    <button id="kt_login_signup_submit" className="btn btn-pill kt-login__btn-primary">
+                                                    <button type="submit" id="kt_login_signup_submit" className="btn btn-pill kt-login__btn-primary" disabled={isSubmitting}>
                                                         {isSubmitting ? 'Please wait...' : 'Sign Up'}
                                                     </button>&nbsp;&nbsp;
                                                     <button id="kt_login_signup_cancel" className="btn btn-pill kt-login__btn-secondary">Cancel</button>
@@ -160,6 +182,8 @@ export default class UserSignUp extends Component {
                             </div>
                         </div>
                     </div>
+                    <ToastContainer />
+
                 </div>
 
             </div>

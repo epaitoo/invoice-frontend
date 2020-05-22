@@ -1,6 +1,7 @@
 // Global CSS
 import '../public/assets/css/style.bundle.css'
 import '../public/assets/plugins/global/plugins.bundle.css'
+import 'react-toastify/dist/ReactToastify.css';
 
 // Custom CSS for a page
 import '../public/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css'
