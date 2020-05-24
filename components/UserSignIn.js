@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
+import fetch from 'isomorphic-unfetch';
+import Cookies from 'js-cookie';
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import  Router  from 'next/router';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 //define vqlidation schema using Yup
 const LoginSchema = Yup.object().shape({
-    email: Yup.string()
+    username: Yup.string()
         .email("Invalid email address format")
         .required("Email is required"),   
     password: Yup.string()
         .min(8, "Password must be 8 characters at minimum")
         .required("Password is required")    
 });
+
+const url = "http://localhost:8000/api/login";
 
 
 
@@ -49,27 +55,61 @@ export default class UserSignIn extends Component {
                                         </div>
                                         {/* Using Formik */}
                                         <Formik
-                                            initialValues={{ email: '', password:''}}
+                                            initialValues={{ username: '', password:''}}
                                             validationSchema={LoginSchema}
-                                            onSubmit={ (values, { setSubmitting }) => {
-                                                alert(JSON.stringify(values, null, 2));
+                                            onSubmit={ async (values, { setSubmitting }) => {
+                                                await new Promise(resolve => setTimeout(resolve, 500));
+
+                                                try {
+                                                    const response = await fetch(url, {
+                                                        method: 'POST',
+                                                        headers: { 'Content-Type': 'application/json' },
+                                                        body: JSON.stringify(values),
+                                                    })
+                                                    if (response.ok) {
+                                                        const data = await response.json();
+                                                        const token = data['access_token'];
+                                                        toast.success('Login Successful', { autoClose: 5000 });
+                                                        // store token in cookies
+                                                        Cookies.set('token', token, { expires: 1 });
+                                                        Router.push("/")
+                                                        // console.log(token);
+                                                    } else {
+                                                        toast.warning('Incorrect Username or Password', { autoClose: 5000 });
+                                                        console.log('Login failed.')
+                                                        // https://github.com/developit/unfetch#caveats
+                                                        let error = new Error(response.statusText)
+                                                        error.response = response
+                                                        return Promise.reject(error)
+                                                    }
+                                                } catch (error) {
+                                                    toast.warning('Hmmm...Something Went Wrong', { autoClose: 5000 });
+                                                    console.error(
+                                                        'You have an error in your code or there are Network issues.',
+                                                        error
+                                                    )
+                                                    throw new Error(error);
+                                                }
+                                                
+                                                // console.log(JSON.stringify(values));
+
                                                 setSubmitting(false);
                                             }}
                                         >
-                                        {({ touched, errors, isSubmitting }) => (
-                                            <Form className="kt-form">
+                                        {({ touched, handleSubmit, errors, isSubmitting }) => (
+                                            <Form className="kt-form" onSubmit={handleSubmit}>
                                                 <div className="input-group">
                                                     <Field
                                                         type="text" 
                                                         placeholder="Email" 
-                                                        name="email" 
+                                                        name="username" 
                                                         className={`form-control ${
-                                                            touched.email && errors.email ? "is-invalid" : ""
+                                                            touched.username && errors.username ? "is-invalid" : ""
                                                         }`} 
                                                     />
                                                     <ErrorMessage
                                                         component="div"
-                                                        name="email"
+                                                        name="username"
                                                         className="error invalid-feedback"
                                                     />   
                                                 </div>
@@ -105,7 +145,7 @@ export default class UserSignIn extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="kt-login__actions">
-                                                    <button id="kt_login_signin_submit" className="btn btn-pill kt-login__btn-primary">
+                                                    <button id="kt_login_signin_submit" type="submit" className="btn btn-pill kt-login__btn-primary" disabled={isSubmitting}>
                                                         {isSubmitting ? 'Please wait...' : 'Sign In'}
                                                     </button>
                                                 </div>
@@ -127,6 +167,8 @@ export default class UserSignIn extends Component {
                             </div>
                         </div>
                     </div>
+
+                    <ToastContainer />
                 </div>
 
             </div>

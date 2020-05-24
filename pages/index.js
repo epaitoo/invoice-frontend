@@ -1,5 +1,6 @@
 import React from 'react'
 import Layout from '../components/Layout'
+import withAuth from '../services/withAuth'
 
 
 const Home = () => (
@@ -10,4 +11,4 @@ const Home = () => (
   </Layout>
 )
 
-export default Home;
+export default withAuth(Home);
