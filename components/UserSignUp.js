@@ -161,9 +161,19 @@ export default class UserSignUp extends Component {
                                                     />   
                                                 </div>
                                                 <div className="kt-login__actions">
-                                                    <button type="submit" id="kt_login_signup_submit" className="btn btn-pill kt-login__btn-primary" disabled={isSubmitting}>
-                                                        {isSubmitting ? 'Please wait...' : 'Sign Up'}
-                                                    </button>&nbsp;&nbsp;
+                                                    {
+                                                        isSubmitting ? 
+                                                            <button type="submit" id="kt_login_signup_submit" 
+                                                                className="btn btn-pill kt-login__btn-primary kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light" 
+                                                                disabled={isSubmitting}>
+                                                                    Please Wait
+                                                            </button>
+                                                        :   <button type="submit" id="kt_login_signup_submit" className="btn btn-pill kt-login__btn-primary" disabled={isSubmitting}>
+                                                                Sign Up
+                                                            </button>
+                                                            
+                                                    }
+                                                    &nbsp;&nbsp;
                                                     <button id="kt_login_signup_cancel" className="btn btn-pill kt-login__btn-secondary">Cancel</button>
                                                 </div>
                                             </Form>
