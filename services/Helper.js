@@ -1,3 +1,8 @@
+import redirect from './redirect';
+import { removeCookie } from './Cookies';
+
+
+
 const apiBaseUrl = 'http://localhost:8000/api';
 
 export default class Data {
@@ -45,3 +50,11 @@ export default class Data {
     }
 
 }
+
+// Sign Out
+export const signOut = (ctx = {}) => {
+  if (process.browser) {
+    removeCookie('token');
+    redirect("/login", ctx);
+  }
+};

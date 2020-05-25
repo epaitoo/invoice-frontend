@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link'
 
 
 const bgImg = {
@@ -102,8 +103,12 @@ const UserBar = () => (
                     </div>
                 </a>
                 <div className="kt-notification__custom kt-space-between">
-                    <a href="custom/user/login-v2.html" target="_blank" className="btn btn-label btn-label-brand btn-sm btn-bold">Sign Out</a>
-                    <a href="custom/user/login-v2.html" target="_blank" className="btn btn-clean btn-sm btn-bold">Upgrade Plan</a>
+                    <Link href="/logout">
+                        <a className="btn btn-label btn-label-brand btn-sm btn-bold">Sign Out</a>
+                    </Link>
+                    <Link href="/">
+                        <a className="btn btn-clean btn-sm btn-bold">Upgrade Plan</a>
+                    </Link>
                 </div>
             </div>
 

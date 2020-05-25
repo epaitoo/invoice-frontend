@@ -83,7 +83,7 @@ export default class UserSignIn extends Component {
                                                         return Promise.reject(error)
                                                     }
                                                 } catch (error) {
-                                                    toast.warning('Hmmm...Something Went Wrong', { autoClose: 5000 });
+                                                    toast.error('Hmmm...Something Went Wrong', { autoClose: 5000 });
                                                     console.error(
                                                         'You have an error in your code or there are Network issues.',
                                                         error

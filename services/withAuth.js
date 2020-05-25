@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import Router from 'next/router'
-import { getCookie } from './Cookies';
+import { getCookie} from './Cookies';
 
 const TokenContext = React.createContext(); 
 
@@ -11,6 +11,12 @@ export default function withAuth(AuthComponent) {
         const token = getCookie('token', ctx.req)
         // Check if Page has a `getInitialProps`; if so, call it.
         const pageProps = AuthComponent.getInitialProps && await AuthComponent.getInitialProps(ctx);
+
+        if (ctx.req && !token) {
+          ctx.res.writeHead(302, { Location: '/login' })
+          ctx.res.end()
+          return
+        }
         // Return props.
         return { ...pageProps, token }
       }
@@ -46,6 +52,5 @@ export default function withAuth(AuthComponent) {
 
 
     }
-
-
 }
+
