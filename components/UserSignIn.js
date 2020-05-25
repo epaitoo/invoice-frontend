@@ -6,6 +6,10 @@ import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import  Router  from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
+import { removeCookie } from '../services/Cookies';
+import { apiBaseUrl } from '../services/Helper';
+
+
 
 
 //define vqlidation schema using Yup
@@ -18,13 +22,30 @@ const LoginSchema = Yup.object().shape({
         .required("Password is required")    
 });
 
-const url = "http://localhost:8000/api/login";
 
 
 
 export default class UserSignIn extends Component {
 
-    
+    // check User Access Level Before logging In
+    checkAccessLevel = (data) => {
+        // console.log(data);
+        const emailVerification = data[0].email_verified_at;
+        localStorage.setItem('username', data[0].name);
+        localStorage.setItem('userID', data[0].id);
+
+        if (emailVerification !== null) {
+            toast.success('Welcome ' + localStorage.getItem('username'), { autoClose: 7000 });
+            Router.push("/")
+        } else {
+            toast.warning('Please verify your email before being granted access to the platform.', { autoClose: 7000 });
+            if (process.browser) {
+                removeCookie('token');
+            }
+            localStorage.clear();
+            return false;
+        }   
+    }
     
     render(){
 
@@ -60,8 +81,10 @@ export default class UserSignIn extends Component {
                                             onSubmit={ async (values, { setSubmitting }) => {
                                                 await new Promise(resolve => setTimeout(resolve, 900));
 
+                                                
+
                                                 try {
-                                                    const response = await fetch(url, {
+                                                    const response = await fetch(`${apiBaseUrl}/login`, {
                                                         method: 'POST',
                                                         headers: { 'Content-Type': 'application/json' },
                                                         body: JSON.stringify(values),
@@ -69,10 +92,15 @@ export default class UserSignIn extends Component {
                                                     if (response.ok) {
                                                         const data = await response.json();
                                                         const token = data['access_token'];
-                                                        toast.success('Login Successful', { autoClose: 7000 });
+                                                        const user = data['user'];
+                                                       
                                                         // store token in cookies
                                                         Cookies.set('token', token, { expires: 1 });
-                                                        Router.push("/")
+                                                        // Write a function to check for access level
+                                                        this.checkAccessLevel(user);
+                                                        // if the user passes the check then the user is loge in
+
+                                                        
                                                         // console.log(token);
                                                     } else {
                                                         toast.warning('Incorrect Username and or Password', { autoClose: 5000 });
@@ -92,6 +120,8 @@ export default class UserSignIn extends Component {
                                                 }
                                                 
                                                 // console.log(JSON.stringify(values));
+
+                                                
 
                                                 setSubmitting(false);
                                             }}
@@ -176,6 +206,8 @@ export default class UserSignIn extends Component {
             
          
         );
+
+       
 
     }
 

@@ -4,6 +4,7 @@ import fetch from 'isomorphic-unfetch';
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { ToastContainer, toast } from 'react-toastify';
+import { apiBaseUrl } from '../services/Helper';
 
 
 
@@ -13,9 +14,6 @@ const ForgetPasswordSchema = Yup.object().shape({
         .email("Invalid email address format")
         .required("Email is required"),      
 });
-
-const url = "http://localhost:8000/api/password/email";
-
 
 
 export default class ForgotPassword extends Component {
@@ -55,7 +53,7 @@ export default class ForgotPassword extends Component {
                                                 await new Promise(resolve => setTimeout(resolve, 900));
 
                                                 try {
-                                                    const response = await fetch(url, {
+                                                    const response = await fetch(`${apiBaseUrl}/password/email`, {
                                                         method: 'POST',
                                                         headers: { 'Content-Type': 'application/json' },
                                                         body: JSON.stringify(values),

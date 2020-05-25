@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import Data from '../services/Helper';
+import { apiBaseUrl } from '../services/Helper';
 import { ToastContainer, toast } from 'react-toastify';
 
 
@@ -26,11 +26,12 @@ const SignUpSchema = Yup.object().shape({
 });
 
 
+
 export default class UserSignUp extends Component {
 
     constructor() {
         super();
-        this.data = new Data();
+        
     }
     
     render(){
@@ -66,20 +67,37 @@ export default class UserSignUp extends Component {
                                             onSubmit={async (values, { setSubmitting }) => {
                                                 await new Promise(resolve => setTimeout(resolve, 500));
                                                 // console.log(values);
-                                                
-                                                // add code here
-                                                this.data.createUser(values)
-                                                    .then(response => {
-                                                        if (response !== null || response !== undefined) {
-                                                            toast.success(response['message'], { autoClose: 5000 });
-                                                            Router.push('/login');
-                                                            console.log(response['message'])
-                                                        } 
+
+                                                try{
+                                                    const response = await fetch(`${apiBaseUrl}/users`, {
+                                                        method: 'POST',
+                                                        headers: { 'Content-Type': 'application/json' },
+                                                        body: JSON.stringify(values),
                                                     })
-                                                    .catch(err => {
-                                                        toast.error('Hmm...Something went Wrong', { autoClose: 5000 });
-                                                        console.log(err)
-                                                    })
+                                                    if (response.ok) {
+                                                        const data = await response.json();
+                                                        const user = data['user'];
+                                                        const message = data['message'];
+                                                        toast.success(message, { autoClose: 7000 });
+                                                        
+                                                        Router.push("/login")
+                                                    } else {
+                                                        toast.warning('Registration failed...Please try again', { autoClose: 5000 });
+                                                        // https://github.com/developit/unfetch#caveats
+                                                        let error = new Error(response.statusText)
+                                                        error.response = response
+                                                        return Promise.reject(error)
+                                                    }
+                                                } catch (error) {
+                                                    toast.error('Hmmm...Something Went Wrong', { autoClose: 5000 });
+                                                    console.error(
+                                                        'You have an error in your code or there are Network issues.',
+                                                        error
+                                                    )
+                                                    throw new Error(error);
+                                                }
+
+         
                                                 setSubmitting(false);
                                             }}
                                         >
