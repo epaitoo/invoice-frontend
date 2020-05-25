@@ -58,7 +58,7 @@ export default class UserSignIn extends Component {
                                             initialValues={{ username: '', password:''}}
                                             validationSchema={LoginSchema}
                                             onSubmit={ async (values, { setSubmitting }) => {
-                                                await new Promise(resolve => setTimeout(resolve, 500));
+                                                await new Promise(resolve => setTimeout(resolve, 900));
 
                                                 try {
                                                     const response = await fetch(url, {
@@ -69,13 +69,13 @@ export default class UserSignIn extends Component {
                                                     if (response.ok) {
                                                         const data = await response.json();
                                                         const token = data['access_token'];
-                                                        toast.success('Login Successful', { autoClose: 5000 });
+                                                        toast.success('Login Successful', { autoClose: 7000 });
                                                         // store token in cookies
                                                         Cookies.set('token', token, { expires: 1 });
                                                         Router.push("/")
                                                         // console.log(token);
                                                     } else {
-                                                        toast.warning('Incorrect Username or Password', { autoClose: 5000 });
+                                                        toast.warning('Incorrect Username and or Password', { autoClose: 5000 });
                                                         console.log('Login failed.')
                                                         // https://github.com/developit/unfetch#caveats
                                                         let error = new Error(response.statusText)

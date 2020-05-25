@@ -174,7 +174,10 @@ export default class UserSignUp extends Component {
                                                             
                                                     }
                                                     &nbsp;&nbsp;
-                                                    <button id="kt_login_signup_cancel" className="btn btn-pill kt-login__btn-secondary">Cancel</button>
+                                                    <Link href="/login">
+                                                        <a id="kt_login_signup_cancel" className="btn btn-pill kt-login__btn-secondary">Cancel</a>
+                                                    </Link>
+                                                    {/* <button id="kt_login_signup_cancel" className="btn btn-pill kt-login__btn-secondary">Cancel</button> */}
                                                 </div>
                                             </Form>
                                         )}

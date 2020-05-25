@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import Head from "next/head";
 import Link from 'next/link';
+import fetch from 'isomorphic-unfetch';
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 
 //define vqlidation schema using Yup
@@ -11,6 +13,8 @@ const ForgetPasswordSchema = Yup.object().shape({
         .email("Invalid email address format")
         .required("Email is required"),      
 });
+
+const url = "http://localhost:8000/api/password/email";
 
 
 
@@ -47,13 +51,44 @@ export default class ForgotPassword extends Component {
                                         <Formik
                                             initialValues={{ email: ''}}
                                             validationSchema={ForgetPasswordSchema}
-                                            onSubmit={ (values, { setSubmitting }) => {
-                                                alert(JSON.stringify(values, null, 2));
+                                            onSubmit={ async (values, { setSubmitting }) => {
+                                                await new Promise(resolve => setTimeout(resolve, 900));
+
+                                                try {
+                                                    const response = await fetch(url, {
+                                                        method: 'POST',
+                                                        headers: { 'Content-Type': 'application/json' },
+                                                        body: JSON.stringify(values),
+                                                    })
+                                                    if (response.ok) {
+                                                        const data = await response.json();
+                                                        const message = data['message'];
+                                                        toast.success(message, { autoClose: 7000 });
+                                                        console.log(message);
+                                                    } else {
+                                                        // https://github.com/developit/unfetch#caveats
+                                                        let error = new Error(response.statusText)
+                                                        error.response = response
+                                                        if (response.status == 422) {
+                                                            toast.warning("We can't find a user with that email address", { autoClose: 7000 })
+                                                            
+                                                        }
+                                                        return Promise.reject(error)
+                                                    }
+                                                } catch(error) {
+                                                    toast.error('Hmmm...Something Went Wrong', { autoClose: 7000 });
+                                                    console.error(
+                                                        'You have an error in your code or there are Network issues.',
+                                                        error
+                                                    )
+                                                    throw new Error(error);
+                                                }
+
                                                 setSubmitting(false);
                                             }}
                                          >
-                                         {({ touched, errors, isSubmitting }) => (
-                                            <Form className="kt-form">
+                                         {({ touched, errors, handleSubmit,  isSubmitting }) => (
+                                            <Form className="kt-form" onSubmit={handleSubmit}>
                                                 <div className="input-group">
                                                     <Field 
                                                         className={`form-control ${
@@ -71,10 +106,12 @@ export default class ForgotPassword extends Component {
                                                     />   
                                                 </div>
                                                 <div className="kt-login__actions">
-                                                    <button id="kt_login_forgot_submit" className="btn btn-pill kt-login__btn-primary">
-                                                        {isSubmitting ? 'Please wait...' : 'Sign In'}
+                                                    <button id="kt_login_forgot_submit" type="submit" className="btn btn-pill kt-login__btn-primary" disabled={isSubmitting}>
+                                                        {isSubmitting ? 'Please wait...' : 'Send Request'}
                                                     </button>&nbsp;&nbsp;
-                                                    <button id="kt_login_forgot_cancel" className="btn btn-pill kt-login__btn-secondary">Cancel</button>
+                                                    <Link href="/login">
+                                                        <a id="kt_login_forgot_cancel" className="btn btn-pill kt-login__btn-secondary">Cancel</a>
+                                                    </Link>
                                                 </div>
                                             </Form>
                                          )}
@@ -92,6 +129,7 @@ export default class ForgotPassword extends Component {
                             </div>
                         </div>
                     </div>
+                    <ToastContainer />
                 </div>
 
             </div>
