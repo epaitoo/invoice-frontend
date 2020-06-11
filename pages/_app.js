@@ -2,6 +2,7 @@
 import '../public/assets/css/style.bundle.css'
 import '../public/assets/plugins/global/plugins.bundle.css'
 import 'react-toastify/dist/ReactToastify.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Router from 'next/router';
 import NProgress from 'nprogress'; //nprogress module
 import 'nprogress/nprogress.css'; //styles of nprogress

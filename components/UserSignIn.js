@@ -96,6 +96,7 @@ export default class UserSignIn extends Component {
                                                        
                                                         // store token in cookies
                                                         Cookies.set('token', token, { expires: 1 });
+                                                        localStorage.setItem('authToken', token);
                                                         // Write a function to check for access level
                                                         this.checkAccessLevel(user);
                                                         // if the user passes the check then the user is loge in

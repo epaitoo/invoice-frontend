@@ -15,3 +15,20 @@ export const signOut = (ctx = {}) => {
   }
   localStorage.clear();
 };
+
+// get token
+export const getToken = ()  => {
+  if (process.browser) {
+    const token = localStorage.getItem('authToken');
+    return token;
+ }
+}
+
+export const getUserId = ()  => {
+  if (process.browser) {
+    const userId = localStorage.getItem('userID');
+    return userId;
+ }
+}
+
+// const token = localStorage.getItem('authToken');

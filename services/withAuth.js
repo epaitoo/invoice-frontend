@@ -24,7 +24,8 @@ export default function withAuth(AuthComponent) {
       constructor(props) {
         super(props)
         this.state = {
-          isLoading: true
+          isLoading: true,
+          token: props.token
         };
       }
 
@@ -53,4 +54,16 @@ export default function withAuth(AuthComponent) {
 
     }
 }
+
+// export const Consumer = TokenContext.Consumer;
+
+// export default function withContext(Component) {
+//   return function ContextComponent(props) {
+//     return (
+//       <TokenContext.Consumer>
+//         {context => <Component {...props} context={context} />}
+//       </TokenContext.Consumer>
+//     );
+//   }
+// }
 

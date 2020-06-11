@@ -44,16 +44,16 @@ const Layout = ({children, title="Onnex Engineering- Admin Dashboard"}) => (
             {/* <!--end::Fonts --> */}
 
             {/* <!--begin::Page Custom Styles(used by this page) --> */}
-		    <link href="/assets/css/pages/login/login-6.css" rel="stylesheet" type="text/css" />
+		    {/* <link href="/assets/css/pages/login/login-6.css" rel="stylesheet" type="text/css" /> */}
 
             {/* <!--begin::Page Vendors Styles(used by this page) --> */}
-            <link href="/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" />
+            {/* <link href="/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" /> */}
 
             {/* <!--end::Page Vendors Styles --> */}
 
             {/* <!--begin::Global Theme Styles(used by all pages) --> */}
-            <link href="/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-            <link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+            {/* <link href="/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" /> */}
+            {/* <link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css" /> */}
 
             {/* <!--end::Global Theme Styles --> */}
 
@@ -75,14 +75,14 @@ const Layout = ({children, title="Onnex Engineering- Admin Dashboard"}) => (
             {/* <!--end::Global Theme Bundle --> */}
 
             {/* <!--begin::Page Vendors(used by this page) --> */}
-            <script src="/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js" type="text/javascript"></script>
+            {/* <script src="/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js" type="text/javascript"></script>
             <script src="//maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM" type="text/javascript"></script>
-            <script src="assets/plugins/custom/gmaps/gmaps.js" type="text/javascript"></script>
+            <script src="assets/plugins/custom/gmaps/gmaps.js" type="text/javascript"></script> */}
 
             {/* <!--end::Page Vendors --> */}
 
             {/* <!--begin::Page Scripts(used by this page) --> */}
-            <script src="/assets/js/pages/dashboard.js" type="text/javascript"></script>
+            {/* <script src="/assets/js/pages/dashboard.js" type="text/javascript"></script> */}
 
             {/* <!--end::Page Scripts --> */}
 
