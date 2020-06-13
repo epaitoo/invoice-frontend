@@ -153,7 +153,7 @@ export default class UpdateCustomer extends Component {
             </div>
           </div>
         </div>
-        <ToastContainer />
+        {/* <ToastContainer /> */}
       </div>
     );
   }

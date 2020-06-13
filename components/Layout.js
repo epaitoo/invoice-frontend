@@ -72,6 +72,17 @@ const Layout = ({children, title="Onnex Engineering- Admin Dashboard"}) => (
             <script src="/assets/plugins/global/plugins.bundle.js" type="text/javascript"></script>
             <script src="/assets/js/scripts.bundle.js" type="text/javascript"></script>
 
+            <script src="https://unpkg.com/react/umd/react.production.min.js" crossorigin></script>
+
+            <script
+            src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"
+            crossorigin></script>
+
+            <script
+            src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js"
+            crossorigin></script>
+
+
             {/* <!--end::Global Theme Bundle --> */}
 
             {/* <!--begin::Page Vendors(used by this page) --> */}

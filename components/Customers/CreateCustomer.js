@@ -131,7 +131,7 @@ export default class CreateCustomer extends Component {
             </div>
           </div>
         </div>
-        <ToastContainer />
+        {/* <ToastContainer /> */}
       </div>
     );
   }

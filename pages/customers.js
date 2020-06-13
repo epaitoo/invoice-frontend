@@ -8,43 +8,99 @@ import UpdateCustomer from "../components/Customers/UpdateCustomer";
 import { ToastContainer, toast } from "react-toastify";
 import fetch from "isomorphic-unfetch";
 import { apiBaseUrl, getToken } from "../services/Helper";
+// React Bootstrap
+import BootstrapTable from "react-bootstrap-table-next";
+import paginationFactory, { PaginationProvider, PaginationListStandalone } from "react-bootstrap-table2-paginator";
+import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+// import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+
 
 function Customers({ customers }) {
   const [index, setIndex] = useState(0);
 
-  const customerList = customers.data.map((customer, index) => (
-    <tr key={customer.id}>
-      <th>{customer.customer_name}</th>
-      <td>{customer.customer_email}</td>
-      <td>{customer.customer_phone_number}</td>
-      <td>{customer.customer_address}</td>
-      <td>
+  const customersData = customers.data;
+  
+  const { SearchBar } = Search;
+
+  const contentTable = ({ paginationProps, paginationTableProps }) => (
+    <div>
+      {/* <PaginationListStandalone { ...paginationProps } /> */}
+      <ToolkitProvider
+            keyField="id"
+            columns={ columns }
+            data={ customersData }
+            search
+      >
+        {
+          toolkitprops => (
+            <div>
+              <SearchBar { ...toolkitprops.searchProps } />
+              <hr/>
+              <BootstrapTable
+                striped
+                hover
+                { ...toolkitprops.baseProps }
+                { ...paginationTableProps } 
+              />
+              {customersData.length <= 0 ? <div><h4 className="text-center">No data found</h4></div> : null}
+            </div>
+          )
+        }
+      </ToolkitProvider>
+      {/* <PaginationListStandalone { ...paginationProps } /> */}
+    </div>
+  );
+
+ 
+
+  const getIndex = (i) => {
+    // console.log('I am here: '+ i);
+    const arrayIndex = customersData
+      .map(function (e) {
+        return e.id;
+      })
+      .indexOf(i);
+    setIndex(arrayIndex);
+  };
+
+  const actionsFormatter = (cell, row, rowIndex) => {
+    return (
+      <div>
         <button
           type="button"
-          className="btn btn-success"
+          className="btn btn-success btn-icon-sm"
           data-toggle="modal"
           data-target="#kt_modal_5"
           aria-haspopup="true"
-          onClick={() => setIndex(index)}
+          onClick={() => getIndex(row.id)}
         >
           <i className="fas fa-edit"></i>
         </button>
         &nbsp;
         <button
           type="button"
-          className="btn btn-danger"
-          onClick={() => deleteCutomer(customer.id)}
+          className="btn btn-danger btn-icon-sm"
+          onClick={() => deleteCutomer(row.id)}
         >
           <i className="far fa-trash-alt"></i>
         </button>
-      </td>
-    </tr>
-  ));
-  const data = customers.data;
-  // console.log(data);
+      </div>
+    );
+  };
 
 
-  const deleteCutomer =  async (customer) => {
+  const columns = [
+    // { dataField:  "id", text: "Id"},
+    { dataField: "customer_name", text: "Customer Name" },
+    { dataField: "customer_email", text: "Customer Email" },
+    { dataField: "customer_phone_number", text: "Customer Phone Number" },
+    { dataField: "customer_address", text: "Customer Address" },
+    { dataField: "id", text: "Actions", formatter: actionsFormatter },
+  ];
+  
+
+
+  const deleteCutomer = async (customer) => {
     // console.log('Deleted Customer', customer);
 
     try {
@@ -65,101 +121,94 @@ function Customers({ customers }) {
         toast.success(message, { autoClose: 7000 });
         Router.push("/customers");
       } else {
-        toast.warning('Could not Delete Customer', { autoClose: 5000 });
+        toast.warning("Could not Delete Customer", { autoClose: 5000 });
         console.log("Error fetching data");
         let error = new Error(response.statusText);
         error.response = response;
         return Promise.reject(error);
       }
     } catch (error) {
-      toast.error('Hmmm...Something Went Wrong', { autoClose: 5000 });
+      toast.error("Hmmm...Something Went Wrong", { autoClose: 5000 });
       console.error(
         "You have an error in your code or there are Network issues.",
         error
       );
       throw new Error(error);
     }
-
-  }
+  };
 
   return (
     <Layout>
-      <div className="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
-        <div className="kt-portlet kt-portlet--mobile">
-          <div className="kt-portlet__head kt-portlet__head--lg">
-            <div className="kt-portlet__head-label">
-              <span className="kt-portlet__head-icon">
-                <i className="kt-font-brand flaticon2-line-chart"></i>
-              </span>
-              <h3 className="kt-portlet__head-title">Customer List</h3>
-            </div>
-            <div className="kt-portlet__head-toolbar">
-              <div className="kt-portlet__head-wrapper">
-                <a href="#" className="btn btn-clean btn-icon-sm">
-                  <i className="la la-long-arrow-left"></i>
-                  Back
-                </a>
-                &nbsp;
-                <div className="dropdown dropdown-inline">
-                  {/* Add Button with a Modal */}
-                  <button
-                    type="button"
-                    className="btn btn-brand btn-icon-sm"
-                    data-toggle="modal"
-                    data-target="#kt_modal_4"
-                    aria-haspopup="true"
-                  >
-                    <i className="flaticon2-plus"></i> Add New
-                  </button>
+      <div>
+        <div className="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+          <div className="kt-portlet kt-portlet--mobile">
+            <div className="kt-portlet__head kt-portlet__head--lg">
+              <div className="kt-portlet__head-label">
+                <span className="kt-portlet__head-icon">
+                  <i className="kt-font-brand flaticon2-line-chart"></i>
+                </span>
+                <h3 className="kt-portlet__head-title">Customer List</h3>
+              </div>
+              <div className="kt-portlet__head-toolbar">
+                <div className="kt-portlet__head-wrapper">
+                  <a href="#" className="btn btn-clean btn-icon-sm">
+                    <i className="la la-long-arrow-left"></i>
+                    Back
+                  </a>
+                  &nbsp;
+                  <div className="dropdown dropdown-inline">
+                    {/* Add Button with a Modal */}
+                    <button
+                      type="button"
+                      className="btn btn-primary btn-icon-sm"
+                      data-toggle="modal"
+                      data-target="#kt_modal_4"
+                      aria-haspopup="true"
+                    >
+                      <i className="flaticon2-plus"></i> Add New
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* <!--begin::Portlet--> */}
-          <div className="kt-portlet">
-            <div className="kt-portlet__body">
-              {/* <!--begin::Section--> */}
-              <div className="kt-section">
-                <div className="kt-section__content">
-                  <table className="table table-striped">
-                    <thead className="thead-dark">
-                      <tr>
-                        <th scope="col">Customer Name</th>
-                        <th scope="col">Customer Email</th>
-                        <th scope="col">Customer Phone Number</th>
-                        <th scope="col">Customer Address</th>
-                        <th scope="col">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {customerList ? customerList : "No Data available"}
-                    </tbody>
-                  </table>
+            {/* <!--begin::Portlet--> */}
+            <div className="kt-portlet">
+              <div className="kt-portlet__body">
+                {/* <!--begin::Section--> */}
+                <div className="kt-section">
+                  <div className="kt-section__content">
+                    <PaginationProvider
+                        pagination={paginationFactory()}
+                    >
+                      {contentTable }
+                    </PaginationProvider>                    
+                  </div>
                 </div>
+
+                {/* <!--end::Section--> */}
               </div>
 
-              {/* <!--end::Section--> */}
+              {/* <!--end::Form--> */}
             </div>
 
-            {/* <!--end::Form--> */}
+            {/* <!--end::Portlet--> */}
           </div>
 
-          {/* <!--end::Portlet--> */}
+          {/* Create Customer Modal */}
+          <CreateCustomer />
+
+          {/* Update Customer Modal */}
+          <UpdateCustomer
+            name={customersData[index].customer_name}
+            email={customersData[index].customer_email}
+            phone={customersData[index].customer_phone_number}
+            address={customersData[index].customer_address}
+            customerId={customersData[index].id}
+          />
+
+          <ToastContainer />
         </div>
-
-        {/* Create Customer Modal */}
-        <CreateCustomer />
-
-        {/* Update Customer Modal */}
-        <UpdateCustomer
-          name={data[index].customer_name}
-          email={data[index].customer_email}
-          phone={data[index].customer_phone_number}
-          address={data[index].customer_address}
-          customerId={data[index].id}
-        />
-        <ToastContainer />
       </div>
     </Layout>
   );
@@ -190,15 +239,16 @@ export async function getStaticProps() {
       console.log("Error fetching data");
       let error = new Error(response.statusText);
       error.response = response;
-      return Promise.reject(error);
+      return toast.warning('Hmmm...Something Went Wrong', { autoClose: 5000 });
+
     }
   } catch (error) {
-    // toast.error('Hmmm...Something Went Wrong', { autoClose: 5000 });
+    toast.error('Hmmm...Something Went Wrong', { autoClose: 5000 });
     console.error(
       "You have an error in your code or there are Network issues.",
       error
     );
-    throw new Error(error);
+    // throw new Error(error);
   }
 }
 
