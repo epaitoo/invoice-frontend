@@ -233,7 +233,7 @@ export default class UpdateCustomer extends Component {
         "You have an error in your code or there are Network issues.",
         error
       );
-      throw new Error(error);
+      // throw new Error(error);
     }
 
     this.reset();
