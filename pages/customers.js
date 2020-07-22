@@ -198,6 +198,7 @@ function Customers({ customers }) {
           {/* Create Customer Modal */}
           <CreateCustomer />
 
+          {/* Show update component if a customer is created */}
           {/* Update Customer Modal */}
           <UpdateCustomer
             name={customersData[index].customer_name}

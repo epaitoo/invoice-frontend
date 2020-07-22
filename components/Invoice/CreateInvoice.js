@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import Layout from "../Layout";
 import fetch from "isomorphic-unfetch";
-import Select from "react-select";
 import { apiBaseUrl } from "../../services/Helper";
 import { ToastContainer, toast } from "react-toastify";
+import InvoiceItem from "./InvoiceItem";
 
 export default class CreateInvoice extends Component {
   state = {
     invoiceNumber: "",
     hasInvoiceNumber: false,
     allCustomers: [],
+    
     customerId: "",
     customerName: "",
     customerPhoneNumber: "",
@@ -20,8 +21,8 @@ export default class CreateInvoice extends Component {
   };
 
   componentDidMount() {
-    this.getInvoiceNum();
-    this.getAllCustomers();
+    // this.getInvoiceNum();
+    // this.getAllCustomers();
   }
 
   // GET: generate invoice Number from api
@@ -115,6 +116,10 @@ export default class CreateInvoice extends Component {
     });
   };
 
+  
+
+
+
   render() {
     const {
       invoiceNumber,
@@ -203,119 +208,11 @@ export default class CreateInvoice extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="kt-invoice__body">
-                  <div className="kt-invoice__container">
-                    <div className="table-responsive">
-                      {/* Invoice item */}
-                      <table className="table" id="tab_logic">
-                        <thead>
-                          <tr>
-                            <th>DESCRIPTION</th>
-                            <th>QUANTITY</th>
-                            <th>UNIT PRICE</th>
-                            <th>AMOUNT</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>
-                              <span>
-                                <input
-                                  type="text"
-                                  placeholder="Enter Product Name"
-                                  size="55"
-                                  className="form-control"
-                                />
-                              </span>
-                            </td>
-                            <td>
-                              <span>
-                                <input
-                                  type="text"
-                                  placeholder="Quantity"
-                                  size="4"
-                                  className="form-control"
-                                />
-                              </span>
-                            </td>
-                            <td>
-                              <span>
-                                <input
-                                  type="text"
-                                  placeholder="Enter Unit Price"
-                                  size="15"
-                                  className="form-control"
-                                />
-                              </span>
-                            </td>
-                            <td>
-                              <span>$0.00</span>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      {/* Invoice item */}
-                    </div>
-                    <div className="row clearfix">
-                      <div className="col-md-12">
-                        <button
-                          id="add_row"
-                          className="btn btn-success pull-left"
-                        >
-                          Add Row
-                        </button>
-                        <button
-                          id="delete_row"
-                          className="pull-right btn btn-danger"
-                        >
-                          Delete Row
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="kt-invoice__footer">
-                  <div className="kt-invoice__container">
-                    <div className="kt-invoice__bank">
-                      <div className="kt-invoice__title">BANK TRANSFER</div>
-                      <div className="kt-invoice__item">
-                        <span className="kt-invoice__label">Account Name:</span>
-                        <span className="kt-invoice__value">Barclays UK</span>
-                      </div>
-                      <div className="kt-invoice__item">
-                        <span className="kt-invoice__label">
-                          Account Number:
-                        </span>
-                        <span className="kt-invoice__value">1234567890934</span>
-                      </div>
-                      <div className="kt-invoice__item">
-                        <span className="kt-invoice__label">Code:</span>
-                        <span className="kt-invoice__value">BARC0032UK</span>
-                      </div>
-                    </div>
-                    <div className="kt-invoice__total">
-                      <span className="kt-invoice__title">TOTAL AMOUNT</span>
-                      <span className="kt-invoice__price">$0.00</span>
-                      <span className="kt-invoice__notice">Taxes Included</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="kt-invoice__actions">
-                  <div className="kt-invoice__container">
-                    <button
-                      type="button"
-                      className="btn btn-label-brand btn-bold"
-                    >
-                      Download Invoice
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-label-brand btn-bold"
-                    >
-                      Print Invoice
-                    </button>
-                  </div>
-                </div>
+
+                <InvoiceItem />
+
+                
+                
               </div>
             </div>
           </div>
