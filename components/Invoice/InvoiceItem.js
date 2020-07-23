@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import Layout from "../Layout";
 import NumberFormat from 'react-number-format';
+import { apiBaseUrl, getToken, getUserId } from "../../services/Helper";
+import { ToastContainer, toast } from "react-toastify";
+import Router from "next/router";
+import fetch from "isomorphic-unfetch";
 
 export default class InvoiceItem extends Component {
   state = {
@@ -16,7 +20,6 @@ export default class InvoiceItem extends Component {
   };
 
   
-
   render() {
     const {
       description,
@@ -50,15 +53,31 @@ export default class InvoiceItem extends Component {
                 <tbody>
                   {!hasItems ? (
                     <tr>
-                      <td>Click on Add Invoice Item to add Items</td>
+                      <td><span>Click on Add Invoice Item to add Items</span></td>
                     </tr>
                   ) : 
                     invoiceItems.map((item, index) =>(
                         <tr key={index}>
-                            <td>{item.description}</td>
-                            <td>{item.quantity}</td>
-                            <td>{item.unitPrice}</td>
-                            <td>{item.amount}</td>
+                            <td><span>{item.description}</span></td>
+                            <td> 
+                              <span>{item.quantity}</span>  
+                            </td>
+                            <td>
+                              <NumberFormat 
+                                  value={this.numberToDecimalPlace(item.unitPrice)} 
+                                  displayType={'text'} 
+                                  thousandSeparator={true} 
+                                  prefix={'GH₵'} 
+                              />
+                            </td>
+                            <td>
+                              <NumberFormat 
+                                  value={item.amount.toFixed(2)} 
+                                  displayType={'text'} 
+                                  thousandSeparator={true} 
+                                  prefix={'GH₵'} 
+                              />
+                            </td>
                         </tr>
                     ))
                   }
@@ -69,12 +88,12 @@ export default class InvoiceItem extends Component {
             <div className="row clearfix">
               <div className="col-md-12">
               {!clickAdd ? (
-                <button id="add_row" className="btn btn-success pull-left" onClick={this.hideAddRowButton}>
+                <button className="btn btn-success pull-left" onClick={this.hideAddRowButton}>
                   Add Invoice Item
                 </button>
               ) : null }
               {hasItems ?
-                (<button id="delete_row" className="btn btn-danger pull-right" onClick={this.clearRows}>
+                (<button  className="btn btn-danger pull-right" onClick={this.clearRows}>
                   Clear All rows
                 </button>) : null
               }     
@@ -94,7 +113,7 @@ export default class InvoiceItem extends Component {
                     </h3>
                   </div>
                 </div>
-
+              
                 <form className="kt-form">
                   <div className="kt-portlet__body">
                     <div className="form-group">
@@ -121,14 +140,13 @@ export default class InvoiceItem extends Component {
                     </div>
                     <div className="form-group">
                       <label>Unit Price (GH₵)</label>
-                      <input
-                        type="number"
-                        className="form-control"
+                      <NumberFormat 
                         name="unitPrice"
                         value={unitPrice}
-                        placeholder="Enter Unit Price"
                         onChange={this.change}
-                      />
+                        className="form-control"
+                        placeholder="Enter Unit Price"
+                     />
                     </div>
                     <div className="form-group">
                       <label>Amount</label>
@@ -136,17 +154,15 @@ export default class InvoiceItem extends Component {
                         className="form-control"
                         name="amount"
                         value={f.toFixed(2)} 
-                        
                         thousandSeparator={true} 
                         prefix={'GH₵'} 
-                        onChange={e => this.handleAmountChange(e.target.value)}
                         disabled
                      />
                     </div>
                   </div>
                   <div className="kt-portlet__foot">
                     <div className="kt-form__actions">
-                      <button type="submit" className="btn btn-success" onClick={this.submit}>
+                      <button type="submit" className="btn btn-success" onClick={this.pushToInvoiceItems}>
                         Submit
                       </button>
                       &nbsp;&nbsp;
@@ -205,21 +221,23 @@ export default class InvoiceItem extends Component {
                     Download Invoice
                 </button>
                 <button
-                    type="button"
+                    type="submit"
                     className="btn btn-label-brand btn-bold"
+                    onClick={this.submit}
                 >
-                    Print Invoice
+                    Submit
                 </button>
             </div>
         </div>
-
-
+        <ToastContainer />
       </div>
     );
   }
 
 
-    
+    numberToDecimalPlace = (num) => {
+      return parseInt(num).toFixed(2);
+    }
 
     change = (e) => {
         const name = e.target.name;
@@ -270,8 +288,8 @@ export default class InvoiceItem extends Component {
     });
   };
 
-
-  submit = (e) => {
+  // Push the Item Oject to the InvoiceItem Array
+  pushToInvoiceItems = (e) => {
     e.preventDefault();
 
     const {
@@ -282,9 +300,7 @@ export default class InvoiceItem extends Component {
     } = this.state;
 
     let amount = quantity * unitPrice;
-    // amount.toFixed(2);
-    // console.log(amount.toFixed(2));
-    // this.setState({ amount: initialTotal });
+    
     const item = {
         description,
         quantity,
@@ -299,7 +315,70 @@ export default class InvoiceItem extends Component {
     });
 
     this.reset();
-    
+  }
+
+
+  submit = async (e) => {
+    e.preventDefault();
+
+    const { invoiceItems, total } = this.state;
+
+    const { 
+      invoiceDate,
+      invoiceNum,
+      customerId,
+      customerName,
+      customerAddress,
+      customerPhoneNumber,
+    } = this.props
+
+    const data = {
+      user_id: getUserId(),
+      invoice_number: invoiceNum,
+      customer_id: customerId,
+      customer_name: customerName,
+      customer_phone_number: customerPhoneNumber,
+      customer_address: customerAddress,
+      date: invoiceDate,
+      invoice_items: invoiceItems,
+      grand_total: total
+    }
+
+    // console.log(data);
+
+    try {
+      const response = await fetch(`${apiBaseUrl}/invoices`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + getToken(),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (response.ok) {
+        // console.log('making request');
+        const data = await response.json();
+        const message = data["message"];
+        // console.log(message);
+        toast.success(message, { autoClose: 7000 });
+        Router.push("/invoice");
+      } else {
+        console.log("Error fetching data");
+        let error = new Error(response.statusText);
+        error.response = response;
+        return Promise.reject(error);
+      }
+    } catch (error) {
+      // toast.error('Hmmm...Something Went Wrong', { autoClose: 5000 });
+      console.error(
+        "You have an error in your code or there are Network issues.",
+        error
+      );
+      throw new Error(error);
+    }
+
+
   }
 
 }

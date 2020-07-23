@@ -21,8 +21,8 @@ export default class CreateInvoice extends Component {
   };
 
   componentDidMount() {
-    // this.getInvoiceNum();
-    // this.getAllCustomers();
+    this.getInvoiceNum();
+    this.getAllCustomers();
   }
 
   // GET: generate invoice Number from api
@@ -116,7 +116,9 @@ export default class CreateInvoice extends Component {
     });
   };
 
-  
+  handleDateValue = (e) => {
+    this.setState({ invoiceDate : e.target.value })
+  }
 
 
 
@@ -124,7 +126,9 @@ export default class CreateInvoice extends Component {
     const {
       invoiceNumber,
       hasInvoiceNumber,
+      invoiceDate,
       allCustomers,
+      customerId,
       customerName,
       customerPhoneNumber,
       customerAddress,
@@ -162,9 +166,12 @@ export default class CreateInvoice extends Component {
                         <span className="kt-invoice__text">
                           <input
                             type="date"
+                            name="date"
                             className="form-control"
                             id="kt_datepicker_1"
                             size="15"
+                            value={invoiceDate}
+                            onChange={this.handleDateValue}
                           />
                         </span>
                       </div>
@@ -188,7 +195,7 @@ export default class CreateInvoice extends Component {
                           <span className="kt-invoice__text">
                             <button
                               type="button"
-                              className="btn btn-success kt-btn kt-btn--pill"
+                              className="btn btn-success"
                               data-toggle="modal"
                               data-target="#kt_modal_4"
                             >
@@ -209,10 +216,14 @@ export default class CreateInvoice extends Component {
                   </div>
                 </div>
 
-                <InvoiceItem />
-
-                
-                
+                <InvoiceItem 
+                  invoiceDate={invoiceDate}
+                  invoiceNum={invoiceNumber}
+                  customerId={customerId}
+                  customerName={customerName}
+                  customerAddress={customerAddress}
+                  customerPhoneNumber={customerPhoneNumber}
+                />               
               </div>
             </div>
           </div>
