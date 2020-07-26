@@ -12,7 +12,7 @@ const TopNav = () => (
         <div className="kt-header__brand kt-grid__item  " id="kt_header_brand">
             <div className="kt-header__brand-logo">
                 <a href="index.html">
-                    <img alt="Logo" src="assets/media/logos/logo-6.png" />
+                    <img alt="Logo" className="onnex-logo" src="assets/media/logos/onnex-logo.png" />
                 </a>
             </div>
         </div>

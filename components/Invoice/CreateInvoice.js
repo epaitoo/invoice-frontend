@@ -18,11 +18,12 @@ export default class CreateInvoice extends Component {
     invoiceDate: "",
     hasSelectedCustomer: false,
     isSelected: false,
+    selectedItemValidationError: "none"
   };
 
   componentDidMount() {
-    this.getInvoiceNum();
-    this.getAllCustomers();
+    // this.getInvoiceNum();
+    // this.getAllCustomers();
   }
 
   // GET: generate invoice Number from api
@@ -39,7 +40,7 @@ export default class CreateInvoice extends Component {
       if (response.ok) {
         const invoiceNum = await response.json();
         this.setState({
-          invoiceNumber: invoiceNum.invoiceNumber,
+          invoiceNumber: 'INV-'+ invoiceNum.invoiceNumber,
           hasInvoiceNumber: true,
         });
       } else {
@@ -78,10 +79,10 @@ export default class CreateInvoice extends Component {
           return customer;
         });
         this.setState({
-          // allCustomers: [{value: '', key:null}].concat(customersFromApi)
-          allCustomers: customersFromApi
+          allCustomers: [{id: 0, value: ""}].concat(customersFromApi)
+          // allCustomers: customersFromApi
         });
-        // console.log(customersFromApi);
+        // console.log(this.state.allCustomers);
       } else {
         console.log("Error fetching data");
         let error = new Error(response.statusText);
@@ -103,17 +104,28 @@ export default class CreateInvoice extends Component {
   getSelectedCustomer = (e) => {
     const { allCustomers } = this.state;
     const value = e.target.value;
-    const user = allCustomers.find(
-      (customer) => customer.customer_name === value
-    );
-    // console.log(user.customer_name);
-    this.setState({
-      customerId: user.id,
-      customerName: user.customer_name,
-      customerPhoneNumber: user.customer_phone_number,
-      customerAddress: user.customer_address,
-      hasSelectedCustomer: true,
-    });
+
+    if (value === "") {
+      this.setState({
+        selectedItemValidationError : "block",
+        hasSelectedCustomer: false
+      });
+    } else {
+      const user = allCustomers.find(
+        (customer) => customer.customer_name === value
+      );
+      // console.log(user.customer_name);
+      this.setState({
+        customerId: user.id,
+        customerName: user.customer_name,
+        customerPhoneNumber: user.customer_phone_number,
+        customerAddress: user.customer_address,
+        hasSelectedCustomer: true,
+        selectedItemValidationError : "none",
+      });
+    }
+
+    
   };
 
   handleDateValue = (e) => {
@@ -134,6 +146,7 @@ export default class CreateInvoice extends Component {
       customerAddress,
       hasSelectedCustomer,
       isSelected,
+      selectedItemValidationError
     } = this.state;
 
     // console.log(hasSelectedCustomer);
@@ -150,18 +163,20 @@ export default class CreateInvoice extends Component {
                       <h1 className="kt-invoice__title">INVOICE</h1>
                       <div href="#" className="kt-invoice__logo">
                         <a href="#">
-                          <img src="assets/media/company-logos/logo_client_color.png" />
+                          <img className="onnex-cropped" src="assets/media/company-logos/onnex-croped.jpg" />
                         </a>
                         <span className="kt-invoice__desc">
                           <span>
-                            Cecilia Chapman, 711-2880 Nulla St, Mankato
+                            Dealers in Security Safe, Filing Cabinet & Office Equipment
                           </span>
-                          <span>Mississippi 96522</span>
+                          <span>Weija SCC Block G2/43, Gicel Estates - Accra</span>
+                          {/* <span>P. O. Box WJ 266 Weija - Accra, Ghana</span> */}
+                          <span>onnexengineering@gmail.com | +233 244 640 212</span>
                         </span>
                       </div>
                     </div>
-                    <div className="kt-invoice__items">
-                      <div className="kt-invoice__item">
+                    <div className="row kt-invoice__items">
+                      <div className="col-sm-4 kt-invoice__item">
                         <span className="kt-invoice__subtitle">DATE</span>
                         <span className="kt-invoice__text">
                           <input
@@ -175,31 +190,39 @@ export default class CreateInvoice extends Component {
                           />
                         </span>
                       </div>
-                      <div className="kt-invoice__item">
+                      <div className="col-sm-4 kt-invoice__item">
                         <span className="kt-invoice__subtitle">
                           INVOICE NO.
                         </span>
                         {hasInvoiceNumber ? (
                           <span className="kt-invoice__text">
-                            INV-{invoiceNumber}
+                            {invoiceNumber}
                           </span>
                         ) : (
                           <span className="kt-invoice__text">GS 000014</span>
                         )}
                       </div>
-                      <div className="kt-invoice__item">
+                      <div className="col-sm-4 kt-invoice__item">
                         <span className="kt-invoice__subtitle">
                           INVOICE TO.
                         </span>
                         {!isSelected ? (
                           <span className="kt-invoice__text">
-                            <button
+                            {/* <button
                               type="button"
                               className="btn btn-success"
                               data-toggle="modal"
                               data-target="#kt_modal_4"
                             >
                               Select or Add Customer
+                            </button> */}
+                            <button
+                                type="button"
+                                className="btn btn-success"
+                                data-toggle="modal"
+                                data-target="#kt_modal_4"
+                            >
+                                Select Customer
                             </button>
                           </span>
                         ) : (
@@ -228,6 +251,8 @@ export default class CreateInvoice extends Component {
             </div>
           </div>
         </div>
+
+
 
         {/* select customer modal */}
         <div
@@ -262,11 +287,10 @@ export default class CreateInvoice extends Component {
                     </label>
                     <select
                       className="form-control kt-selectpicker"
-                      data-size="4"
+                      // data-size="4"
                       onChange={this.getSelectedCustomer}
-                      defaultValue
                     >
-                      <option key='select' disabled>Choose here</option>
+                      {/* <option key='select' disabled>Choose here</option> */}
                       {allCustomers.map((customer) => (
                         <option
                           key={customer.id}
@@ -276,6 +300,12 @@ export default class CreateInvoice extends Component {
                         </option>
                       ))}
                     </select>
+                    {/*  Validation Error */}
+                    <div style={{ color: 'red', marginTop:'5px', display: selectedItemValidationError}}>
+                        Please Select A Company
+                    </div>
+
+
                   </div>
                   {hasSelectedCustomer ? (
                     <div className="form-group">

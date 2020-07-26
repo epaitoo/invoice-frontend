@@ -5,7 +5,7 @@ const MobileHeader = () => (
     <div id="kt_header_mobile" className="kt-header-mobile  kt-header-mobile--fixed ">
         <div className="kt-header-mobile__logo">
             <a href="index.html">
-                <img alt="Logo" src="/assets/media/logos/logo-6-sm.png" />
+                <img alt="Logo" className="onnex-logo-sm" src="/assets/media/logos/onnex-logo.png" />
             </a>
         </div>
         <div className="kt-header-mobile__toolbar">

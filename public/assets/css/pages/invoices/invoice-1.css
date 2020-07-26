@@ -182,6 +182,9 @@
         text-align: left; }
         .kt-invoice-1 .kt-invoice__head .kt-invoice__brand .kt-invoice__logo img {
           text-align: left; }
+        .onnex-cropped{
+          height: 50px;
+          width: 202px;}
         .kt-invoice-1 .kt-invoice__head .kt-invoice__brand .kt-invoice__logo .kt-invoice__desc {
           text-align: left; }
     .kt-invoice-1 .kt-invoice__head .kt-invoice__items {

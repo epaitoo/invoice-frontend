@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Layout from "../Layout";
 import NumberFormat from 'react-number-format';
 import { apiBaseUrl, getToken, getUserId } from "../../services/Helper";
 import { ToastContainer, toast } from "react-toastify";
@@ -16,7 +15,8 @@ export default class InvoiceItem extends Component {
     hasAdded: false,
     clickAdd: false,
     invoiceItems: [],
-    total: 0
+    total: 0,
+    hasSubmit: false
   };
 
   
@@ -30,7 +30,8 @@ export default class InvoiceItem extends Component {
       hasAdded,
       clickAdd,
       invoiceItems,
-      total
+      total,
+      hasSubmit
     } = this.state;
 
     let f = quantity * unitPrice;
@@ -58,24 +59,26 @@ export default class InvoiceItem extends Component {
                   ) : 
                     invoiceItems.map((item, index) =>(
                         <tr key={index}>
-                            <td><span>{item.description}</span></td>
+                            <td><span >{item.description}</span></td>
                             <td> 
-                              <span>{item.quantity}</span>  
+                              <span >{item.quantity}</span>  
                             </td>
                             <td>
                               <NumberFormat 
-                                  value={this.numberToDecimalPlace(item.unitPrice)} 
-                                  displayType={'text'} 
-                                  thousandSeparator={true} 
-                                  prefix={'GH₵'} 
+                                value={this.numberToDecimalPlace(item.unitPrice)} 
+                                displayType={'text'} 
+                                thousandSeparator={true} 
+                                prefix={'GH₵'} 
+                                
                               />
                             </td>
                             <td>
                               <NumberFormat 
-                                  value={item.amount.toFixed(2)} 
-                                  displayType={'text'} 
-                                  thousandSeparator={true} 
-                                  prefix={'GH₵'} 
+                                value={item.amount.toFixed(2)} 
+                                displayType={'text'} 
+                                thousandSeparator={true} 
+                                prefix={'GH₵'} 
+                                
                               />
                             </td>
                         </tr>
@@ -91,6 +94,7 @@ export default class InvoiceItem extends Component {
                 <button className="btn btn-success pull-left" onClick={this.hideAddRowButton}>
                   Add Invoice Item
                 </button>
+                
               ) : null }
               {hasItems ?
                 (<button  className="btn btn-danger pull-right" onClick={this.clearRows}>
@@ -214,15 +218,17 @@ export default class InvoiceItem extends Component {
         </div>
         <div className="kt-invoice__actions">
             <div className="kt-invoice__container">
+              {hasSubmit ? (
                 <button
                     type="button"
                     className="btn btn-label-brand btn-bold"
                 >
-                    Download Invoice
+                  Print Invoice
                 </button>
+              ) : null}               
                 <button
                     type="submit"
-                    className="btn btn-label-brand btn-bold"
+                    className="btn btn-success"
                     onClick={this.submit}
                 >
                     Submit
@@ -321,7 +327,7 @@ export default class InvoiceItem extends Component {
   submit = async (e) => {
     e.preventDefault();
 
-    const { invoiceItems, total } = this.state;
+    const { invoiceItems, total, hasSubmit } = this.state;
 
     const { 
       invoiceDate,
@@ -361,8 +367,9 @@ export default class InvoiceItem extends Component {
         const data = await response.json();
         const message = data["message"];
         // console.log(message);
+        this.setState({ hasSubmit: true });
         toast.success(message, { autoClose: 7000 });
-        Router.push("/invoice");
+        // Router.push("/invoice");
       } else {
         console.log("Error fetching data");
         let error = new Error(response.statusText);

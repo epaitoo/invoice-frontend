@@ -30346,6 +30346,10 @@ body {
       display: flex;
       align-items: center;
       justify-content: flex-start; }
+      .kt-header-mobile .kt-header-mobile__logo .onnex-logo-sm{
+        height: 47px;
+        width: 50px;
+      }  
     .kt-header-mobile .kt-header-mobile__toolbar {
       display: flex;
       align-items: center;
@@ -31985,6 +31989,11 @@ body {
     display: flex;
     align-self: center;
     justify-content: center; }
+
+  .onnex-logo {
+    height: 80px;
+    width: 99px;
+  }  
 
 @media (min-width: 1025px) {
   .kt-header__brand {
