@@ -26,10 +26,10 @@ function Customers({ customers }) {
     <div>
       {/* <PaginationListStandalone { ...paginationProps } /> */}
       <ToolkitProvider
-            keyField="id"
-            columns={ columns }
-            data={ customersData }
-            search
+          keyField="id"
+          columns={ columns }
+          data={ customersData }
+          search
       >
         {
           toolkitprops => (
@@ -52,7 +52,7 @@ function Customers({ customers }) {
   );
 
  
-
+  // Get the index of a Row and set the Index using setIndex Hook
   const getIndex = (i) => {
     // console.log('I am here: '+ i);
     const arrayIndex = customersData

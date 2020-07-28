@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import Layout from "../Layout";
+import Layout from "../components/Layout";
+
 import fetch from "isomorphic-unfetch";
-import { apiBaseUrl } from "../../services/Helper";
+import { apiBaseUrl, getToken } from "../services/Helper";
+
 import { ToastContainer, toast } from "react-toastify";
-import InvoiceItem from "./InvoiceItem";
+import InvoiceItem from "../components/Invoice/InvoiceItem";
 
 export default class CreateInvoice extends Component {
   state = {
@@ -22,8 +24,8 @@ export default class CreateInvoice extends Component {
   };
 
   componentDidMount() {
-    // this.getInvoiceNum();
-    // this.getAllCustomers();
+    this.getInvoiceNum();
+    this.getAllCustomers();
   }
 
   // GET: generate invoice Number from api

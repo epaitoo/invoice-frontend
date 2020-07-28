@@ -369,20 +369,20 @@ export default class InvoiceItem extends Component {
         // console.log(message);
         this.setState({ hasSubmit: true });
         toast.success(message, { autoClose: 7000 });
-        // Router.push("/invoice");
+        Router.push("/invoice");
       } else {
         console.log("Error fetching data");
         let error = new Error(response.statusText);
         error.response = response;
-        return Promise.reject(error);
+        return toast.warning('Hmmm...Something Went Wrong', { autoClose: 5000 });
       }
     } catch (error) {
-      // toast.error('Hmmm...Something Went Wrong', { autoClose: 5000 });
+      toast.error('Cannot create Request Now', { autoClose: 5000 });
       console.error(
         "You have an error in your code or there are Network issues.",
         error
       );
-      throw new Error(error);
+      // throw new Error(error);
     }
 
 
