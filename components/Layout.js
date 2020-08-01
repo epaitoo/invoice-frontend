@@ -1,9 +1,11 @@
+import dynamic from 'next/dynamic'
+
 import Head from "next/head";
 
 import MobileHeader from "./MobileHeader";
 import LeftSideMenu from "./LeftSideMenu";
 import TopNav from "./TopNav";
-import Header from "./Header";
+// import Header from "./Header";
 // import Footer from "./Footer";
 
 // var KTAppOptions = {
@@ -24,6 +26,12 @@ import Header from "./Header";
 //         }
 //     }
 // };
+
+const HeaderComponentWithNoSSR = dynamic(
+    () => import('./Header'),
+    { ssr: false }
+  )
+  
 
 
 const Layout = ({children, title="Onnex Engineering- Admin Dashboard"}) => (
@@ -121,7 +129,7 @@ const Layout = ({children, title="Onnex Engineering- Admin Dashboard"}) => (
                         <div className="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
 
                             {/* Recent bOOKING sEARCH HERE */}
-                            <Header />
+                            {/* <HeaderComponentWithNoSSR /> */}
                             {/* Recent bOOKING sEARCH  ENDS HERE */}
 
                             {/* <!-- begin:: Content --> */}

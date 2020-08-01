@@ -1,18 +1,29 @@
 import React, { useState } from "react";
 import Link from 'next/link'
+import dynamic from 'next/dynamic';
 import Layout from "../components/Layout";
 import { ToastContainer, toast } from "react-toastify";
 import fetch from "isomorphic-unfetch";
 import { apiBaseUrl, getToken } from "../services/Helper";
-import ViewInvoice from "../components/Invoice/ViewInvoice";
+// import ViewInvoice from "../components/Invoice/ViewInvoice";
+
 
 // React Bootstrap
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory, { PaginationProvider, PaginationListStandalone } from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 
+// use react-easy-print package in this component which doesn't not work with SSR
+const ViewInvoiceWithNoSSR = dynamic(
+  () => import('../components/Invoice/ViewInvoice'),
+  { ssr: false }
+)
+
 function invoiceTable({ invoices }) {
     const [index, setIndex] = useState(0);
+
+    // hide table hook
+    const [ showInvoice, setShowInvoice ] = useState(false);
 
     const invoiceData = invoices.data;
   
@@ -58,6 +69,18 @@ function invoiceTable({ invoices }) {
         setIndex(arrayIndex);
     };
 
+    // Hide or show Invoice Component
+    const displayInvoice = () => {
+      return setShowInvoice(true);
+      
+    }
+
+    const hideInvoice = () => {
+      return setShowInvoice(false);
+      
+    }
+
+
     const actionsFormatter = (cell, row, rowIndex) => {
         return (
           <div>
@@ -67,7 +90,7 @@ function invoiceTable({ invoices }) {
               data-toggle="modal"
               data-target="#kt_modal_4_2"
               aria-haspopup="true"
-              onClick={() => getIndex(row.id)}
+              onClick={() => {getIndex(row.id); displayInvoice()}}
             >
               <i className="fas fa-edit"></i>
             </button>
@@ -91,9 +114,12 @@ function invoiceTable({ invoices }) {
         { dataField: "id", text: "Actions", formatter: actionsFormatter },
     ];
 
+    console.log(showInvoice);
+
     return (
         <Layout>
-            <div>
+            {showInvoice == false ? 
+              <div>
                 <div className="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
                     <div className="kt-portlet kt-portlet--mobile">
                         <div className="kt-portlet__head kt-portlet__head--lg">
@@ -150,20 +176,26 @@ function invoiceTable({ invoices }) {
                         {/* <!--end::Portlet--> */}
                     </div>
 
-                    {/* View Invoice Component */}
-                    <ViewInvoice 
-                        date={invoiceData[index].date}
-                        invoiceNumber={invoiceData[index].invoice_number}
-                        customerName={invoiceData[index].customer_name}
-                        customerPhone={invoiceData[index].customer_phone_number}
-                        customerAddress={invoiceData[index].customer_address}
-                        invoiceItems={invoiceData[index].invoice_items}
-                        totalAmount={invoiceData[index].grand_total}
-                    />
+                    
+                    
 
                     <ToastContainer />
                 </div>
-            </div>
+              </div> : 
+
+              <ViewInvoiceWithNoSSR 
+                  date={invoiceData[index].date}
+                  invoiceNumber={invoiceData[index].invoice_number}
+                  customerName={invoiceData[index].customer_name}
+                  customerPhone={invoiceData[index].customer_phone_number}
+                  customerAddress={invoiceData[index].customer_address}
+                  invoiceItems={invoiceData[index].invoice_items}
+                  totalAmount={invoiceData[index].grand_total}
+                  showInvoice={showInvoice}
+                  hideInvoice={hideInvoice}
+              /> 
+            }
+            
         </Layout>
 
     );
