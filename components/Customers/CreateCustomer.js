@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Router from "next/router";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import fetch from "isomorphic-unfetch";
-import { apiBaseUrl, getToken, getUserId } from "../../services/Helper";
+import { apiBaseUrl, getToken, showApiRequestError } from "../../services/Helper";
 
 export default class CreateCustomer extends Component {
   state = {
@@ -131,7 +131,6 @@ export default class CreateCustomer extends Component {
             </div>
           </div>
         </div>
-        {/* <ToastContainer /> */}
       </div>
     );
   }
@@ -169,14 +168,12 @@ export default class CreateCustomer extends Component {
     } = this.state;
 
     const customer = {
-      userId: getUserId(),
       customer_name,
       customer_email,
       customer_phone_number,
       customer_address,
     };
 
-    // console.log(customer);
 
     try {
       const response = await fetch(`${apiBaseUrl}/customers`, {
@@ -189,17 +186,12 @@ export default class CreateCustomer extends Component {
         body: JSON.stringify(customer),
       });
       if (response.ok) {
-        // console.log('making request');
         const data = await response.json();
         const message = data["message"];
-        // console.log(message);
         toast.success(message, { autoClose: 7000 });
         Router.push("/customers");
       } else {
-        console.log("Error fetching data");
-        let error = new Error(response.statusText);
-        error.response = response;
-        return Promise.reject(error);
+        showApiRequestError("Could not Create Customer", response)
       }
     } catch (error) {
       // toast.error('Hmmm...Something Went Wrong', { autoClose: 5000 });

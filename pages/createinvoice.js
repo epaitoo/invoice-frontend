@@ -9,8 +9,6 @@ import InvoiceItem from "../components/Invoice/InvoiceItem";
 
 export default class CreateInvoice extends Component {
   state = {
-    invoiceNumber: "",
-    hasInvoiceNumber: false,
     allCustomers: [],
     
     customerId: "",
@@ -18,49 +16,17 @@ export default class CreateInvoice extends Component {
     customerPhoneNumber: "",
     customerAddress: "",
     invoiceDate: "",
+    dueDate: "",
     hasSelectedCustomer: false,
     isSelected: false,
     selectedItemValidationError: "none"
   };
 
   componentDidMount() {
-    this.getInvoiceNum();
     this.getAllCustomers();
   }
 
-  // GET: generate invoice Number from api
-  async getInvoiceNum() {
-    try {
-      const response = await fetch(`${apiBaseUrl}/generate_invoice_num`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          // Authorization: "Bearer " + getToken(),
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.ok) {
-        const invoiceNum = await response.json();
-        this.setState({
-          invoiceNumber: 'INV-'+ invoiceNum.invoiceNumber,
-          hasInvoiceNumber: true,
-        });
-      } else {
-        console.log("Error fetching data");
-        let error = new Error(response.statusText);
-        error.response = response;
-        return toast.warning("Could Not Generate Invoice Number", {
-          autoClose: 5000,
-        });
-      }
-    } catch (error) {
-      toast.error("Hmmm...Something Went Wrong", { autoClose: 5000 });
-      console.error(
-        "You have an error in your code or there are Network issues.",
-        error
-      );
-    }
-  }
+  
 
   // GET all customers
   async getAllCustomers() {
@@ -69,7 +35,7 @@ export default class CreateInvoice extends Component {
         method: "GET",
         headers: {
           Accept: "application/json",
-          // Authorization: "Bearer " + getToken(),
+          Authorization: "Bearer " + getToken(),
           "Content-Type": "application/json",
         },
       });
@@ -89,7 +55,7 @@ export default class CreateInvoice extends Component {
         console.log("Error fetching data");
         let error = new Error(response.statusText);
         error.response = response;
-        return toast.warning("Could Not Generate Invoice Number", {
+        return toast.warning("Could Not Get Customers", {
           autoClose: 5000,
         });
       }
@@ -134,13 +100,16 @@ export default class CreateInvoice extends Component {
     this.setState({ invoiceDate : e.target.value })
   }
 
+  handleDueDateValue = (e) => {
+    this.setState({ dueDate : e.target.value })
+  }
+
 
 
   render() {
     const {
-      invoiceNumber,
-      hasInvoiceNumber,
       invoiceDate,
+      dueDate,
       allCustomers,
       customerId,
       customerName,
@@ -165,15 +134,11 @@ export default class CreateInvoice extends Component {
                       <h1 className="kt-invoice__title">INVOICE</h1>
                       <div href="#" className="kt-invoice__logo">
                         <a href="#">
-                          <img className="onnex-cropped" src="assets/media/company-logos/onnex-croped.jpg" />
+                          <img className="onnex-cropped" src="assets/media/company-logos/logo_client_color.png" />
                         </a>
                         <span className="kt-invoice__desc">
-                          <span>
-                            Dealers in Security Safe, Filing Cabinet & Office Equipment
-                          </span>
-                          <span>Weija SCC Block G2/43, Gicel Estates - Accra</span>
-                          {/* <span>P. O. Box WJ 266 Weija - Accra, Ghana</span> */}
-                          <span>onnexengineering@gmail.com | +233 244 640 212</span>
+                          <span>work@cst.com | epaitoo.com</span>
+                          <span>121 232 321 6</span>
                         </span>
                       </div>
                     </div>
@@ -193,16 +158,17 @@ export default class CreateInvoice extends Component {
                         </span>
                       </div>
                       <div className="col-sm-4 kt-invoice__item">
-                        <span className="kt-invoice__subtitle">
-                          INVOICE NO.
-                        </span>
-                        {hasInvoiceNumber ? (
-                          <span className="kt-invoice__text">
-                            {invoiceNumber}
-                          </span>
-                        ) : (
-                          <span className="kt-invoice__text">GS 000014</span>
-                        )}
+                        <span className="kt-invoice__subtitle">DUE DATE</span>
+                        <input
+                            type="date"
+                            name="date"
+                            className="form-control"
+                            id="kt_datepicker_1"
+                            size="15"
+                            value={dueDate}
+                            onChange={this.handleDueDateValue}
+                          />
+                        
                       </div>
                       <div className="col-sm-4 kt-invoice__item">
                         <span className="kt-invoice__subtitle">
@@ -243,11 +209,8 @@ export default class CreateInvoice extends Component {
 
                 <InvoiceItem 
                   invoiceDate={invoiceDate}
-                  invoiceNum={invoiceNumber}
+                  dueDate={dueDate}
                   customerId={customerId}
-                  customerName={customerName}
-                  customerAddress={customerAddress}
-                  customerPhoneNumber={customerPhoneNumber}
                 />               
               </div>
             </div>

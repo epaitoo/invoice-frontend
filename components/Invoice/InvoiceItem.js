@@ -167,7 +167,7 @@ export default class InvoiceItem extends Component {
                   <div className="kt-portlet__foot">
                     <div className="kt-form__actions">
                       <button type="submit" className="btn btn-success" onClick={this.pushToInvoiceItems}>
-                        Submit
+                        Add Item
                       </button>
                       &nbsp;&nbsp;
                       <button type="reset" className="btn btn-danger" onClick={this.showAddRowButton}>
@@ -186,18 +186,18 @@ export default class InvoiceItem extends Component {
                 <div className="kt-invoice__bank">
                     <div className="kt-invoice__title">BANK TRANSFER</div>
                     <div className="kt-invoice__item">
-                    <span className="kt-invoice__label">Account Name:</span>
-                    <span className="kt-invoice__value">Barclays UK</span>
+                    <span className="kt-invoice__label">Banker:</span>
+                    <span className="kt-invoice__value">Fidelity Bank GH</span>
                     </div>
                     <div className="kt-invoice__item">
                     <span className="kt-invoice__label">
-                        Account Number:
+                      Account Name:
                     </span>
-                    <span className="kt-invoice__value">1234567890934</span>
+                    <span className="kt-invoice__value">ONNEX ENGINEERING</span>
                     </div>
                     <div className="kt-invoice__item">
-                    <span className="kt-invoice__label">Code:</span>
-                    <span className="kt-invoice__value">BARC0032UK</span>
+                    <span className="kt-invoice__label">Account Number:</span>
+                    <span className="kt-invoice__value">1050446258013</span>
                     </div>
                 </div>
                 <div className="kt-invoice__total">
@@ -331,22 +331,17 @@ export default class InvoiceItem extends Component {
 
     const { 
       invoiceDate,
-      invoiceNum,
+      dueDate,
       customerId,
-      customerName,
-      customerAddress,
-      customerPhoneNumber,
     } = this.props
 
     const data = {
       user_id: getUserId(),
-      invoice_number: invoiceNum,
       customer_id: customerId,
-      customer_name: customerName,
-      customer_phone_number: customerPhoneNumber,
-      customer_address: customerAddress,
       date: invoiceDate,
+      due_date: dueDate,
       invoice_items: invoiceItems,
+      terms_and_conditions: true,
       grand_total: total
     }
 

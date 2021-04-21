@@ -9,7 +9,7 @@ export default class ViewInvoice extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            invoiceNumber: "",
+            dueDate: "",
             invoiceDate: "",
             customer_name: "",
             customer_phone_number: "",
@@ -26,7 +26,7 @@ export default class ViewInvoice extends Component {
 
     UNSAFE_componentWillReceiveProps(nextProps) {
         this.setState({
-            invoiceNumber: nextProps.invoiceNumber,
+            dueDate: nextProps.dueDate,
             invoiceDate: nextProps.date,
             customer_name: nextProps.customerName,
             customer_phone_number: nextProps.customerPhone,
@@ -43,10 +43,10 @@ export default class ViewInvoice extends Component {
         // }
 
         const { 
-            invoiceNumber, date, customerName, 
+            dueDate, date, customerName, 
             customerPhone, customerAddress, invoiceItems, totalAmount, showInvoice } = this.props;
         this.setState({
-            invoiceNumber: invoiceNumber,
+            dueDate,
             invoiceDate: date,
             customer_name: customerName,
             customer_phone_number: customerPhone,
@@ -63,7 +63,7 @@ export default class ViewInvoice extends Component {
     render() {
 
         const {
-            invoiceNumber,
+            dueDate,
             invoiceDate,
             customer_name,
             customer_phone_number,
@@ -126,10 +126,11 @@ export default class ViewInvoice extends Component {
                                                 <div className="kt-invoice__brand">
                                                     <h1 className="kt-invoice__title">INVOICE</h1>
                                                     <div href="#" className="kt-invoice__logo">
-                                                        <a href="#"><img src="assets/media/company-logos/logo_client_color.png" /></a>
+                                                        {/* <a href="#"><img src="assets/media/company-logos/logo_client_color.png" /></a> */}
+                                                        <img className="onnex-cropped" src="assets/media/company-logos/logo_client_color.png" />
                                                         <span className="kt-invoice__desc">
-                                                            <span>Dealers in Security Safe, Filing Cabinet & Office Equipment</span>
-                                                            <span>onnexengineering@gmail.com | +233 244 640 212</span>
+                                                            <span>work@cst.com | epaitoo.com</span>
+                                                            <span>121 232 321 6</span>
                                                         </span>
                                                     </div>
                                                 </div>
@@ -139,12 +140,13 @@ export default class ViewInvoice extends Component {
                                                         <span className="kt-invoice__text">{invoiceDate}</span>
                                                     </div>
                                                     <div className="kt-invoice__item">
-                                                        <span className="kt-invoice__subtitle">INVOICE NO.</span>
-                                                        <span className="kt-invoice__text">{invoiceNumber}</span>
+                                                    <span className="kt-invoice__subtitle">DUE DATE</span>
+                                                        {/* <span className="kt-invoice__text">{invoiceNumber}</span> */}
+                                                        <span className="kt-invoice__text">{dueDate}</span>
                                                     </div>
                                                     <div className="kt-invoice__item">
                                                         <span className="kt-invoice__subtitle">INVOICE TO.</span>
-                                                        <span className="kt-invoice__text">{customer_name}.<br />{customer_address}<br />{customer_phone_number}</span>
+                                                        <span className="kt-invoice__text">{customer_name}.<br />{customer_phone_number}<br />{customer_address}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -173,16 +175,16 @@ export default class ViewInvoice extends Component {
                                                 <div className="kt-invoice__bank">
                                                     <div className="kt-invoice__title">BANK TRANSFER</div>
                                                     <div className="kt-invoice__item">
+                                                        <span className="kt-invoice__label">Banker:</span>
+                                                        <span className="kt-invoice__value">Fidelity Bank GH</span>
+                                                    </div>
+                                                    <div className="kt-invoice__item">
                                                         <span className="kt-invoice__label">Account Name:</span>
-                                                        <span className="kt-invoice__value">Barclays UK</span>
+                                                        <span className="kt-invoice__value">ONNEX ENGINEERING</span>
                                                     </div>
                                                     <div className="kt-invoice__item">
                                                         <span className="kt-invoice__label">Account Number:</span>
-                                                        <span className="kt-invoice__value">1234567890934</span>
-                                                    </div>
-                                                    <div className="kt-invoice__item">
-                                                        <span className="kt-invoice__label">Code:</span>
-                                                        <span className="kt-invoice__value">BARC0032UK</span>
+                                                        <span className="kt-invoice__value">1050446258013</span>
                                                     </div>
                                                 </div>
                                                 <div className="kt-invoice__total">

@@ -69,7 +69,7 @@ export default class UserSignUp extends Component {
                                                 // console.log(values);
 
                                                 try{
-                                                    const response = await fetch(`${apiBaseUrl}/users`, {
+                                                    const response = await fetch(`${apiBaseUrl}/register`, {
                                                         method: 'POST',
                                                         headers: { 'Content-Type': 'application/json' },
                                                         body: JSON.stringify(values),

@@ -30,21 +30,11 @@ export default class UserSignIn extends Component {
     // check User Access Level Before logging In
     checkAccessLevel = (data) => {
         // console.log(data);
-        const emailVerification = data[0].email_verified_at;
-        localStorage.setItem('username', data[0].name);
-        localStorage.setItem('userID', data[0].id);
+        localStorage.setItem('username', data.name);
+        localStorage.setItem('userID', data.id);
 
-        if (emailVerification !== null) {
-            toast.success('Welcome ' + localStorage.getItem('username'), { autoClose: 7000 });
-            Router.push("/")
-        } else {
-            toast.warning('Please verify your email before being granted access to the platform.', { autoClose: 7000 });
-            if (process.browser) {
-                removeCookie('token');
-            }
-            localStorage.clear();
-            return false;
-        }   
+        toast.success('Welcome ' + localStorage.getItem('username'), { autoClose: 7000 });
+        Router.push("/")
     }
     
     render(){
@@ -96,7 +86,7 @@ export default class UserSignIn extends Component {
                                                        
                                                         // store token in cookies
                                                         Cookies.set('token', token, { expires: 1 });
-                                                        // localStorage.setItem('authToken', token);
+                                                        localStorage.setItem('authToken', token);
                                                         // Write a function to check for access level
                                                         this.checkAccessLevel(user);
                                                         // if the user passes the check then the user is loge in

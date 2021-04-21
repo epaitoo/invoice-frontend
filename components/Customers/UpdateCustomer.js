@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Router from "next/router";
 import fetch from "isomorphic-unfetch";
 import { ToastContainer, toast } from "react-toastify";
-import { apiBaseUrl, getToken, getUserId } from "../../services/Helper";
+import { apiBaseUrl, getToken, getUserId, showApiRequestError } from "../../services/Helper";
 
 export default class UpdateCustomer extends Component {
   constructor(props) {
@@ -221,11 +221,7 @@ export default class UpdateCustomer extends Component {
         toast.success(message, { autoClose: 7000 });
         Router.push("/customers");
       } else {
-        toast.warning('Hmmm...Something Went Wrong', { autoClose: 5000 });
-        console.log("Error fetching data");
-        let error = new Error(response.statusText);
-        error.response = response;
-        return Promise.reject(error);
+        showApiRequestError("Could not Create Customer", response);
       }
     } catch (error) {
       toast.error('Hmmm...Something Went Wrong', { autoClose: 5000 });

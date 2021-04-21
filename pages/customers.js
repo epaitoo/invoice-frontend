@@ -7,51 +7,55 @@ import CreateCustomer from "../components/Customers/CreateCustomer";
 import UpdateCustomer from "../components/Customers/UpdateCustomer";
 import { ToastContainer, toast } from "react-toastify";
 import fetch from "isomorphic-unfetch";
-import { apiBaseUrl, getToken } from "../services/Helper";
+import { apiBaseUrl, getToken, showApiRequestError } from "../services/Helper";
 // React Bootstrap
 import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory, { PaginationProvider, PaginationListStandalone } from "react-bootstrap-table2-paginator";
+import paginationFactory, {
+  PaginationProvider,
+  PaginationListStandalone,
+} from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 // import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
-
+import { getCookie } from "../services/Cookies";
 
 function Customers({ customers }) {
   const [index, setIndex] = useState(0);
 
   const customersData = customers.data;
-  
+
   const { SearchBar } = Search;
 
   const contentTable = ({ paginationProps, paginationTableProps }) => (
     <div>
       {/* <PaginationListStandalone { ...paginationProps } /> */}
       <ToolkitProvider
-          keyField="id"
-          columns={ columns }
-          data={ customersData }
-          search
+        keyField="id"
+        columns={columns}
+        data={customersData}
+        search
       >
-        {
-          toolkitprops => (
-            <div>
-              <SearchBar { ...toolkitprops.searchProps } />
-              <hr/>
-              <BootstrapTable
-                striped
-                hover
-                { ...toolkitprops.baseProps }
-                { ...paginationTableProps } 
-              />
-              {customersData.length <= 0 ? <div><h4 className="text-center">No data found</h4></div> : null}
-            </div>
-          )
-        }
+        {(toolkitprops) => (
+          <div>
+            <SearchBar {...toolkitprops.searchProps} />
+            <hr />
+            <BootstrapTable
+              striped
+              hover
+              {...toolkitprops.baseProps}
+              {...paginationTableProps}
+            />
+            {customersData.length == 0 ? (
+              <div>
+                <h4 className="text-center">No data found</h4>
+              </div>
+            ) : null}
+          </div>
+        )}
       </ToolkitProvider>
       {/* <PaginationListStandalone { ...paginationProps } /> */}
     </div>
   );
 
- 
   // Get the index of a Row and set the Index using setIndex Hook
   const getIndex = (i) => {
     // console.log('I am here: '+ i);
@@ -80,14 +84,13 @@ function Customers({ customers }) {
         <button
           type="button"
           className="btn btn-danger btn-icon-sm"
-          onClick={() => deleteCutomer(row.id)}
+          onClick={() => deleteCustomer(row.id)}
         >
           <i className="far fa-trash-alt"></i>
         </button>
       </div>
     );
   };
-
 
   const columns = [
     // { dataField:  "id", text: "Id"},
@@ -97,11 +100,8 @@ function Customers({ customers }) {
     { dataField: "customer_address", text: "Customer Address" },
     { dataField: "id", text: "Actions", formatter: actionsFormatter },
   ];
-  
 
-
-  const deleteCutomer = async (customer) => {
-    // console.log('Deleted Customer', customer);
+  const deleteCustomer = async (customer) => {
 
     try {
       const response = await fetch(`${apiBaseUrl}/customers/${customer}`, {
@@ -111,21 +111,14 @@ function Customers({ customers }) {
           Authorization: "Bearer " + getToken(),
           "Content-Type": "application/json",
         },
-        // body: JSON.stringify(customer),
       });
       if (response.ok) {
-        // console.log('making request');
         const data = await response.json();
         const message = data["message"];
-        // console.log(message);
         toast.success(message, { autoClose: 7000 });
         Router.push("/customers");
       } else {
-        toast.warning("Could not Delete Customer", { autoClose: 5000 });
-        console.log("Error fetching data");
-        let error = new Error(response.statusText);
-        error.response = response;
-        return Promise.reject(error);
+        showApiRequestError("Could not Delete Customer", response)
       }
     } catch (error) {
       toast.error("Hmmm...Something Went Wrong", { autoClose: 5000 });
@@ -178,11 +171,9 @@ function Customers({ customers }) {
                 {/* <!--begin::Section--> */}
                 <div className="kt-section">
                   <div className="kt-section__content">
-                    <PaginationProvider
-                        pagination={paginationFactory()}
-                    >
-                      {contentTable }
-                    </PaginationProvider>                    
+                    <PaginationProvider pagination={paginationFactory()}>
+                      {contentTable}
+                    </PaginationProvider>
                   </div>
                 </div>
 
@@ -200,13 +191,15 @@ function Customers({ customers }) {
 
           {/* Show update component if a customer is created */}
           {/* Update Customer Modal */}
-          <UpdateCustomer
-            name={customersData[index].customer_name}
-            email={customersData[index].customer_email}
-            phone={customersData[index].customer_phone_number}
-            address={customersData[index].customer_address}
-            customerId={customersData[index].id}
-          />
+          {customersData.length != 0 ? 
+            <UpdateCustomer
+              name={customersData[index].customer_name}
+              email={customersData[index].customer_email}
+              phone={customersData[index].customer_phone_number}
+              address={customersData[index].customer_address}
+              customerId={customersData[index].id}
+            /> : null
+          }
 
           <ToastContainer />
         </div>
@@ -215,22 +208,23 @@ function Customers({ customers }) {
   );
 }
 
-export async function getStaticProps() {
-  // console.log('making request');
-  // Call an external API endpoint to get customers.
+
+
+export async function getServerSideProps(context) {
+  const token = getCookie("token", context.req);
+  
   try {
     const response = await fetch(`${apiBaseUrl}/customers`, {
       method: "GET",
       headers: {
         Accept: "application/json",
-        Authorization: "Bearer " + getToken(),
+        Authorization: "Bearer " + token,
         "Content-Type": "application/json",
       },
     });
+
     if (response.ok) {
-      // console.log('making request');
       const customers = await response.json();
-      // console.log(data);
       return {
         props: {
           customers,
@@ -240,11 +234,10 @@ export async function getStaticProps() {
       console.log("Error fetching data");
       let error = new Error(response.statusText);
       error.response = response;
-      return toast.warning('Hmmm...Something Went Wrong', { autoClose: 5000 });
-
+      return toast.warning("Hmmm...Something Went Wrong", { autoClose: 5000 });
     }
   } catch (error) {
-    toast.error('Hmmm...Something Went Wrong', { autoClose: 5000 });
+    toast.error("Hmmm...Something Went Wrong", { autoClose: 5000 });
     console.error(
       "You have an error in your code or there are Network issues.",
       error
