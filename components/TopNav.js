@@ -19,9 +19,9 @@ const TopNav = () => (
 		{/* <!-- end:: Aside --> */}
 
         {/* <!-- begin:: Title --> */}
-        <h3 className="kt-header__title kt-grid__item">
+        {/* <h3 className="kt-header__title kt-grid__item">
             Applications
-        </h3>
+        </h3> */}
 		{/* <!-- end:: Title --> */}
 
         {/* <!-- begin: Header Menu --> */}
