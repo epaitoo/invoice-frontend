@@ -176,15 +176,15 @@ export default class ViewInvoice extends Component {
                                                     <div className="kt-invoice__title">BANK TRANSFER</div>
                                                     <div className="kt-invoice__item">
                                                         <span className="kt-invoice__label">Banker:</span>
-                                                        <span className="kt-invoice__value">Fidelity Bank GH</span>
+                                                        <span className="kt-invoice__value">Ajax Bank </span>
                                                     </div>
                                                     <div className="kt-invoice__item">
                                                         <span className="kt-invoice__label">Account Name:</span>
-                                                        <span className="kt-invoice__value">ONNEX ENGINEERING</span>
+                                                        <span className="kt-invoice__value">Game Cast</span>
                                                     </div>
                                                     <div className="kt-invoice__item">
                                                         <span className="kt-invoice__label">Account Number:</span>
-                                                        <span className="kt-invoice__value">1050446258013</span>
+                                                        <span className="kt-invoice__value">3242342342332</span>
                                                     </div>
                                                 </div>
                                                 <div className="kt-invoice__total">

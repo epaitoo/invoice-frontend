@@ -8,24 +8,6 @@ import TopNav from "./TopNav";
 // import Header from "./Header";
 // import Footer from "./Footer";
 
-// var KTAppOptions = {
-//     "colors": {
-//         "state": {
-//             "brand": "#22b9ff",
-//             "light": "#ffffff",
-//             "dark": "#282a3c",
-//             "primary": "#5867dd",
-//             "success": "#34bfa3",
-//             "info": "#36a3f7",
-//             "warning": "#ffb822",
-//             "danger": "#fd3995"
-//         },
-//         "base": {
-//             "label": ["#c5cbe3", "#a1a8c3", "#3d4465", "#3e4466"],
-//             "shape": ["#f0f3ff", "#d9dffa", "#afb4d4", "#646c9a"]
-//         }
-//     }
-// };
 
 const HeaderComponentWithNoSSR = dynamic(
     () => import('./Header'),
@@ -34,7 +16,7 @@ const HeaderComponentWithNoSSR = dynamic(
   
 
 
-const Layout = ({children, title="Onnex Engineering- Admin Dashboard"}) => (
+const Layout = ({children, title="Einvoice-App"}) => (
 
     
     <div>
@@ -43,8 +25,8 @@ const Layout = ({children, title="Onnex Engineering- Admin Dashboard"}) => (
             <meta charSet="utf-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
             <title>{title}</title>
-            <meta name="description" content="Onnex Engineering Invoice with Admin Dasboard" />
-            <meta content="Onnex Engineering" name="author" />
+            <meta name="description" content="Einvoice-App" />
+            <meta content="Einvoice-App" name="author" />
 
             {/* <!--begin::Fonts --> */}
             <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Roboto:300,400,500,600,700" />
