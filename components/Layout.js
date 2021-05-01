@@ -47,7 +47,9 @@ const Layout = ({children, title="Einvoice-App"}) => (
 
             {/* <!--end::Global Theme Styles --> */}
 
-            <link rel="shortcut icon" href="/assets/media/logos/favicon.ico" />
+            {/* <link rel="shortcut icon" href="/assets/media/logos/favicon.ico" /> */}
+
+            <link rel="shortcut icon" href="/assets/media/logos/favicons/favicon.ico" />
 
 
             

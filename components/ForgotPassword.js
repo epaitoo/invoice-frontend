@@ -37,7 +37,7 @@ export default class ForgotPassword extends Component {
                                 <div className="kt-login__container">
                                     <div className="kt-login__logo">
                                         <a href="#">
-                                            <img src="assets/media/logos/logo-mini-2-md.png" />
+                                            <img src="assets/media/logos/icons8.png" />
                                         </a>
                                     </div>
                                     <div className="kt-login__forgot">

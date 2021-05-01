@@ -56,7 +56,7 @@ export default class UserSignIn extends Component {
                                     <div className="kt-login__logo">
                                         <Link href="/">
                                             <a>
-                                                <img src="assets/media/logos/logo-mini-2-md.png" />
+                                                <img src="assets/media/logos/icons8.png" />
                                             </a>
                                         </Link>
                                     </div>

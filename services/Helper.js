@@ -73,7 +73,7 @@ export const showApiRequestError = (message, res) => {
   console.log("Error fetching data");
   let error = new Error(res.statusText);
   error.response = res;
-  return Promise.reject(error);
+  return toast.warning(message, { autoClose: 5000 });;
 }
 
 // Make Get Request
