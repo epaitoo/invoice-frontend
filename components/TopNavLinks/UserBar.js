@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link'
-import { getUserName } from '../../services/Helper'
+// import { getUserName } from '../../services/Helper'
 
 
 const bgImg = {
