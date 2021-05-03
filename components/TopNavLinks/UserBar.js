@@ -27,7 +27,7 @@ const UserBar = () => (
                     <span className="kt-badge kt-badge--lg kt-badge--rounded kt-badge--bold kt-font-success"> { localStorage.getItem('username').charAt(0).toUpperCase() }</span>
                 </div>
                 <div className="kt-user-card__name">
-                    { getUserName() }
+                    {/* { getUserName() } */}
                 </div>
             </div>
 
