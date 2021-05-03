@@ -68,6 +68,13 @@ export const getUserId = ()  => {
  }
 }
 
+export const getUserName = ()  => {
+  if (process.browser) {
+    const username = localStorage.getItem('username');
+    return username;
+ }
+}
+
 export const showApiRequestError = (message, res) => {
   toast.warning(message, { autoClose: 5000 });
   console.log("Error fetching data");

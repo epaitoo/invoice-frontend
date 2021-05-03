@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link'
+import { getUserName } from '../../services/Helper'
 
 
 const bgImg = {
@@ -26,7 +27,7 @@ const UserBar = () => (
                     <span className="kt-badge kt-badge--lg kt-badge--rounded kt-badge--bold kt-font-success"> { localStorage.getItem('username').charAt(0).toUpperCase() }</span>
                 </div>
                 <div className="kt-user-card__name">
-                    { localStorage.getItem('username') }
+                    { getUserName() }
                 </div>
             </div>
 
