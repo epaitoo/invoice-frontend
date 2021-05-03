@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link'
-// import { getUserName } from '../../services/Helper'
+import { getUserName, getUserNameFirstLetter } from '../../services/Helper'
 
 
 const bgImg = {
@@ -24,10 +24,10 @@ const UserBar = () => (
                     <img className="kt-hidden" alt="Pic" src="assets/media/users/300_25.jpg" />
 
                     {/* <!--use below badge element instead the user avatar to display username's first letter(remove kt-hidden className to display it) --> */}
-                    <span className="kt-badge kt-badge--lg kt-badge--rounded kt-badge--bold kt-font-success"> { localStorage.getItem('username').charAt(0).toUpperCase() }</span>
+                    <span className="kt-badge kt-badge--lg kt-badge--rounded kt-badge--bold kt-font-success"> { getUserNameFirstLetter() }</span>
                 </div>
                 <div className="kt-user-card__name">
-                    {/* { getUserName() } */}
+                    { getUserName() }
                 </div>
             </div>
 

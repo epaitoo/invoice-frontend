@@ -67,6 +67,15 @@ export const getUserName = () => {
   } 
 };
 
+export const getUserNameFirstLetter = () => {
+  if (typeof window !== "undefined") {
+    const firstLetter = localStorage.getItem('username').charAt(0).toUpperCase();
+    return firstLetter;
+  } 
+};
+
+
+
 export const showApiRequestError = (message, res) => {
   toast.warning(message, { autoClose: 5000 });
   console.log("Error fetching data");
