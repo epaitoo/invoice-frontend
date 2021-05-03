@@ -6,6 +6,8 @@ import fetch from "isomorphic-unfetch";
 import { apiBaseUrl, getToken } from "../../services/Helper";
 import InvoiceItem from "./InvoiceItem";
 
+import { getCookie } from "../../services/Cookies";
+
 export default class InvoiceCreate extends Component {
   state = {
     allCustomers: [],
@@ -27,12 +29,15 @@ export default class InvoiceCreate extends Component {
 
   // GET all customers
   async getAllCustomers() {
+
+    const token = getCookie("token");
+
     try {
       const response = await fetch(`${apiBaseUrl}/customers`, {
         method: "GET",
         headers: {
           Accept: "application/json",
-          Authorization: "Bearer " + getToken(),
+          Authorization: "Bearer " + token,
           "Content-Type": "application/json",
         },
       });
