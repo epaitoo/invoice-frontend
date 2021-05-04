@@ -5,6 +5,8 @@ The Front-end for an Invoice web app built with Next.js React Framework.
 View Live Demo of the App [here](https://invoice-frontend-one.vercel.app/)
 
 ## Features
+- Registration & Authentication
+- Forgot Password & Email Verification Feature
 - Create, view, update and delete Invoice
 - Ability to print an Invoice
 - Create, view, update and delete Customers Info
